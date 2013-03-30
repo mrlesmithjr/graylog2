@@ -32,7 +32,7 @@ sudo apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-de
 #sudo apt-file update
 
 #Install Oracle Java 6
-apt-get install openjdk-6-jre
+sudo apt-get install openjdk-6-jre
 
 echo Downloading Elasticsearch
 
