@@ -3,3 +3,17 @@ This installation script will perform an automated install of Graylog2 on Ubuntu
 contact me on the twitters @mrlesmithjr
 visit my website at EveryThingShouldBeVirtual.com
 
+Installation steps
+------------------
+sudo apt-get -y install git
+cd~
+git clone https://github.com/mrlesmithjr/graylog2/
+cd graylog2
+chmod +x install_graylog2.sh
+nano install_graylog2.sh
+Change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP for you. The default is auto detect.
+Save the file with ctrl^x.
+
+Now run the following to start running the script. You will be prompted for your sudo password once the script starts.
+
+./install_graylog2.sh
