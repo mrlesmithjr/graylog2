@@ -2,11 +2,20 @@
 #Provided by @mrlesmithjr
 #EveryThingShouldBeVirtual.com
 
+#setup logging
+#
+#
+# Logs stderr and stdout to separate files.
+exec 2> >(tee "./graylog2/install_graylog2.err")
+exec > >(tee "./graylog2/install_graylog2.log")
+#
 # Apache Settings
-#change x.x.x.x to whatever your ip address is of the server you are installing on
+#change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP
+#which is the default
 #SERVERNAME="x.x.x.x"
 #SERVERALIAS="x.x.x.x"
-
+#
+#
 echo Detecting IP Address
 IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 
