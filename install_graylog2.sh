@@ -4,8 +4,14 @@
 
 # Apache Settings
 #change x.x.x.x to whatever your ip address is of the server you are installing on
-SERVERNAME="x.x.x.x"
-SERVERALIAS="x.x.x.x"
+#SERVERNAME="x.x.x.x"
+#SERVERALIAS="x.x.x.x"
+
+echo Detecting IP Address
+IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+
+SERVERNAME=$IPADDY
+SERVERALIAS=$IPADDY
 
 echo Updating Apt Packages and Installing Pre-Reqs
 sudo apt-get -qq update
@@ -252,7 +258,6 @@ sudo service apache2 restart
 #All Done
 echo Installation has completed!!
 echo Browse to IP address of this Graylog2 Server Used for Installation
-IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 echo IP Address detected from system is $IPADDY
 echo Browse to http://$IPADDY
 echo You Entered $SERVERNAME During Install
