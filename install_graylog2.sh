@@ -22,7 +22,8 @@ IPADDY="$(sudo ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d 
 SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
 
-echo Updating Apt Packages and Installing Pre-Reqs
+echo Disabling CD Sources and Updating Apt Packages and Installing Pre-Reqs
+sudo sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 sudo apt-get -qq update
 sudo apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties apt-file
 sudo apt-file update
