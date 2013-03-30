@@ -17,7 +17,7 @@ exec > >(tee "./graylog2/install_graylog2.log")
 #
 #
 echo Detecting IP Address
-IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+IPADDY="$(sudo ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 
 SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
