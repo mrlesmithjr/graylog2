@@ -194,7 +194,7 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 #RAILS_ENV=production script/rails server
 
 # Install Apache-passenger
-echo "Installing Apache-Passenger Modules"
+# echo "Installing Apache-Passenger Modules"
 
 gem install passenger
 passenger-install-apache2-module
