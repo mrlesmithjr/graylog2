@@ -42,19 +42,19 @@ sudo apt-get -y install oracle-java7-installer
 echo "Downloading Elasticsearch"
 
 git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
-sudo chown -R $USER:$USER /usr/local/src
+sudo chown -R $USER:$USER /opt
 
-cd /usr/local/src
+cd /opt
 git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
 
-echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /usr/local/src"
+echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
 wget http://download.graylog2.org/graylog2-server/graylog2-server-0.11.0.tar.gz
 wget http://download.graylog2.org/graylog2-web-interface/graylog2-web-interface-0.11.0.tar.gz
 
 #extract files
-echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /usr/local/src"
+echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
 
 for f in *.tar.gz
 do
