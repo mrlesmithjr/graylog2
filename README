@@ -8,12 +8,22 @@ Installation steps
 sudo apt-get -y install git
 cd ~
 git clone https://github.com/mrlesmithjr/graylog2/
-chmod +x ./graylog2/install_graylog2.sh
-nano ./graylog2/install_graylog2.sh
-Change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP for you. The default is auto detect.
+chmod +x ./graylog2/install_graylog2_ubuntu.sh
+
+To change your ip address of the server you are installing on you will need to edit the script or let the script auto detect your IP for you. The default is auto detect. If you use the default of auto detect skip editing the file and continue on.
+Edit the file
+
+nano ./graylog2/install_graylog2_ubuntu.sh
+
 Save the file with ctrl^x.
 
-Now run the following to start running the script. You will be prompted for your sudo password once the script starts.
+Now enter the following to start running the script. You will be prompted for your sudo password once the script starts. **Do not run using sudo as it can break some of the script.**
 
 cd ~
-./graylog2/install_graylog2.sh
+./graylog2/install_graylog2_ubuntu.sh
+
+Within the github repository there is also a script to automate a Debian 6.0 Graylog2 installation. If you are installing on Debian 6.0 run the following instead.
+
+chmod +x ./graylog2/install_graylog2_debian.sh
+cd ~
+./graylog2/install_graylog2_debian.sh
