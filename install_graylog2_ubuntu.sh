@@ -71,9 +71,9 @@ echo "Installing elasticsearch"
 
 mv *servicewrapper*/service elasticsearch/bin/
 rm -Rf *servicewrapper*
-sudo /usr/local/src/elasticsearch/bin/service/elasticsearch install
+sudo /opt/elasticsearch/bin/service/elasticsearch install
 sudo ln -s `readlink -f elasticsearch/bin/service/elasticsearch` /usr/bin/elasticsearch_ctl
-sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /usr/local/src/elasticsearch/config/elasticsearch.yml
+sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /opt/elasticsearch/config/elasticsearch.yml
 /etc/init.d/elasticsearch start
 
 #Test elasticsearch
@@ -91,11 +91,11 @@ sudo apt-get -y install mongodb-10gen
 echo "Installing graylog2-server"
 
 cd graylog2-server-0.11.0/
-cp /usr/local/src/graylog2-server/elasticsearch.yml{.example,}
-sudo ln -s /usr/local/src/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
-cp /usr/local/src/graylog2-server/graylog2.conf{.example,}
-sudo ln -s /usr/local/src/graylog2-server/graylog2.conf /etc/graylog2.conf
-sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /usr/local/src/graylog2-server/graylog2.conf
+cp /opt/graylog2-server/elasticsearch.yml{.example,}
+sudo ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
+cp /opt/graylog2-server/graylog2.conf{.example,}
+sudo ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
+sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
 
 echo "Creating /etc/init.d/graylog2-server startup script"
 
@@ -111,7 +111,7 @@ cat <<'EOF'
 CMD=$1
 NOHUP=`which nohup`
 JAVA_CMD=/usr/bin/java
-GRAYLOG2_SERVER_HOME=/usr/local/src/graylog2-server
+GRAYLOG2_SERVER_HOME=/opt/graylog2-server
 start() {
  echo "Starting graylog2-server ..."
 $NOHUP $JAVA_CMD -jar $GRAYLOG2_SERVER_HOME/graylog2-server.jar > /var/log/graylog2.log 2>&1 &
@@ -156,7 +156,7 @@ sudo update-rc.d graylog2-server defaults
 #Install graylog2 web interface
 echo "Installing graylog2-web-interface"
 
-cd /usr/local/src/
+cd /opt/
 ln -s graylog2-web-interface-0.11.0 graylog2-web-interface
 
 #Install Ruby
@@ -170,7 +170,7 @@ rvm install 1.9.2
 #Install Gems
 echo "Installing Ruby Gems"
 
-cd /usr/local/src/graylog2-web-interface
+cd /opt/graylog2-web-interface
 gem install bundler --no-ri --no-rdoc
 bundle install
 
@@ -183,7 +183,7 @@ production:
  port: 27017
  username: grayloguser
  password: password123
- database: graylog2" | tee /usr/local/src/graylog2-web-interface/config/mongoid.yml
+ database: graylog2" | tee /opt/graylog2-web-interface/config/mongoid.yml
 
 #Create MongoDB Users and Set Passwords
 echo Creating MongoDB Users and Passwords
@@ -194,7 +194,7 @@ mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
 mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 
 #Test Install
-#cd /usr/local/src/graylog2-web-interface
+#cd /opt/graylog2-web-interface
 #RAILS_ENV=production script/rails server
 
 # Install Apache-passenger
@@ -223,7 +223,7 @@ echo "
 <VirtualHost *:80>
 ServerName ${SERVERNAME}
 ServerAlias ${SERVERALIAS}
-DocumentRoot /usr/local/src/graylog2-web-interface/public
+DocumentRoot /opt/graylog2-web-interface/public
 
 #Allow from all
 Options -MultiViews
