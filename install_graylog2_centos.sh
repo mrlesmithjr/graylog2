@@ -28,7 +28,7 @@ SERVERALIAS=$IPADDY
 su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm'
 # Installing all pre-reqs
 
-yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel java-1.7.0-openjdk java-1.7.0-openjdk-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel libyaml-devel libtoolbisonlibxml2-devel libxslt-devel
+yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel java-1.7.0-openjdk java-1.7.0-openjdk-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel libyaml-devel libtoolbisonlibxml2-devel libxslt-devel libtool bison
 
 echo "Downloading Elasticsearch"
 
