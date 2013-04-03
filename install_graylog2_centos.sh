@@ -25,18 +25,10 @@ SERVERALIAS=$IPADDY
 
 # Adding EL6 Extra Packages
 
-(
-cat <<'EOF'
-[epel]
-name=Extra Packages for Enterprise Linux 6 - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
-failovermethod=priority
-enabled=0
-EOF
-) | tee /etc/yum.repos.d/epel.repo
+su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm'
+# Installing all pre-reqs
 
-yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel java-1.7.0-openjdk java-1.7.0-openjdk-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel
+yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel java-1.7.0-openjdk java-1.7.0-openjdk-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel libyaml-devel libtoolbisonlibxml2-devel libxslt-devel
 
 echo "Downloading Elasticsearch"
 
@@ -270,7 +262,7 @@ sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
 sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
 sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
-sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
+sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.conf
 echo '$template GRAYLOG2,"<%PRI%>%HOSTNAME% %TIMESTAMP% %syslogtag% %APP-NAME% %msg%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
 echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
