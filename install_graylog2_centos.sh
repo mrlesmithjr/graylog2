@@ -181,9 +181,9 @@ chown -R graylog2:graylog2 /opt/graylog2-web-interface
 usermod -g rvm root
 source /etc/profile.d/rvm.sh
 
-#Test Install
-#cd /opt/graylog2-web-interface
-#RAILS_ENV=production script/rails server
+# Test Install
+# cd /opt/graylog2-web-interface
+# RAILS_ENV=production script/rails server
 
 # Install Apache-passenger
 echo "Installing Apache-Passenger Modules"
@@ -194,9 +194,9 @@ passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/httpd/conf.d/passenger.conf"
-echo "LoadModule passenger_module /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRoot /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRuby /home/$USER/.rvm/wrappers/ruby-1.9.2-p320/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p0/gems/passenger-3.0.19/ext/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p0/gems/passenger-3.0.19" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerRuby /usr/local/rvm/gems/ruby-2.0.0-p0/gems/passenger-3.0.19/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
 
 # Assign permissions for Apache startup
 chown -R apache:apache /opt/graylog2-web-interface
