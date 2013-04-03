@@ -4,7 +4,7 @@
 #
 #setup logging
 #
-# Ubuntu Install Script
+# Ubuntu 12.10 Install Script
 #
 # Logs stderr and stdout to separate files.
 exec 2> >(tee "./graylog2/install_graylog2.err")
