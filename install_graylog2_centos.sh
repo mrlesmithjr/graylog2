@@ -17,7 +17,7 @@ exec > >(tee "./graylog2/install_graylog2.log")
 #
 #
 echo "Detecting IP Address"
-IPADDY="$(sudo ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 echo "Detected IP Address is $IPADDY"
 
 SERVERNAME=$IPADDY
@@ -31,17 +31,17 @@ echo "Downloading Elasticsearch"
 
 git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
 
-cd /usr/local/src
+cd /opt
 git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
 
-echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /usr/local/src"
+echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
 wget http://download.graylog2.org/graylog2-server/graylog2-server-0.11.0.tar.gz
 wget http://download.graylog2.org/graylog2-web-interface/graylog2-web-interface-0.11.0.tar.gz
 
 #extract files
-echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /usr/local/src"
+echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
 
 for f in *.tar.gz
 do
@@ -215,9 +215,9 @@ passenger-install-apache2-module --auto
 #Add passenger code
 echo "Adding Apache Passenger modules to /etc/httpd/conf.d/passenger.conf"
 
-echo "LoadModule passenger_module /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRoot /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRuby /home/$USER/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/httpd/conf.d/passenger.conf
+echo "LoadModule passenger_module /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerRoot /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerRuby /home/$USER/.rvm/wrappers/ruby-1.9.2-p320/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
 
 #Restart Apache2
 echo "Restarting Apache2"
@@ -241,14 +241,14 @@ Options -MultiViews
 ErrorLog /var/log/apache2/error.log
 LogLevel warn
 CustomLog /var/log/apache2/access.log combined
-</VirtualHost>" | sudo tee -a /etc/httpd/conf/httpd.conf
+</VirtualHost>" | tee -a /etc/httpd/conf/httpd.conf
 
 # Enable virtualhost
 echo "Enabling Apache VirtualHost Settings"
 
-sudo a2dissite 000-default
-sudo a2ensite graylog2
-sudo service apache2 reload
+a2dissite 000-default
+a2ensite graylog2
+service apache2 reload
 
 # Restart apache
 echo "Restarting Apache2"
@@ -257,27 +257,27 @@ echo "Restarting Apache2"
 #Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf, rsyslog.conf"
 
-sudo sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
-sudo sed -i -e 's|mongodb_password = 123|mongodb_password = password123|' /etc/graylog2.conf
-sudo sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
-sudo sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
-sudo sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
-sudo sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
-sudo sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
-sudo sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
-echo '$template GRAYLOG2,"<%PRI%>%HOSTNAME% %TIMESTAMP% %syslogtag% %APP-NAME% %msg%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
-echo '$ActionForwardDefaultTemplate GRAYLOG2' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '$PreserveFQDN on' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '*.* @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
+sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
+sed -i -e 's|mongodb_password = 123|mongodb_password = password123|' /etc/graylog2.conf
+sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
+sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
+sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
+sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
+sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
+sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
+echo '$template GRAYLOG2,"<%PRI%>%HOSTNAME% %TIMESTAMP% %syslogtag% %APP-NAME% %msg%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
+echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+echo '*.* @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 
 #Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
 
-sudo service elasticsearch restart
-sudo service mongodb restart
-sudo service graylog2-server restart
-sudo service rsyslog restart
-sudo service apache2 restart
+service elasticsearch restart
+service mongodb restart
+service graylog2-server restart
+service rsyslog restart
+service apache2 restart
 
 #All Done
 echo "Installation has completed!!"
