@@ -198,6 +198,11 @@ mongo admin --eval "db.auth('admin', 'password123')"
 mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
 mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 
+useradd graylog2 -d /opt/graylog2-web-interface -G rvm
+chown -R graylog2:graylog2 /opt/graylog2-web-interface
+usermod -g rvm root
+source /etc/profile.d/rvm.sh
+
 #Test Install
 #cd /opt/graylog2-web-interface
 #RAILS_ENV=production script/rails server
@@ -217,9 +222,12 @@ echo "LoadModule passenger_module /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/pas
 echo "PassengerRoot /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | tee -a /etc/httpd/conf.d/passenger.conf
 echo "PassengerRuby /home/$USER/.rvm/wrappers/ruby-1.9.2-p320/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
 
+# Assign permissions for Apache startup
+chown -R apache:apache /opt/graylog2-web-interface
+chkconfig httpd on
+
 #Restart Apache2
 echo "Restarting Apache2"
-chkconfig httpd on
 /etc/init.d/httpd start
 
 #If apache fails and complains about unable to load mod_passenger.so check and verify that your passengerroot version matches
