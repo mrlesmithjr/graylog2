@@ -23,9 +23,20 @@ echo "Detected IP Address is $IPADDY"
 SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
 
-yum update -y
-yum install -y vim zip unzip mlocate wget openjdk java openssl-devel zlib-devel gcc gcc-c++ make autoconf readline-devel curl-devel expat-devel gettext-devel httpd httpd-devel apr-devel apr-util-devel
+# Adding EL6 Extra Packages
 
+(
+cat <<'EOF'
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=0
+EOF
+) | tee /etc/yum.repos.d/epel.repo
+
+yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel java-1.7.0-openjdk java-1.7.0-openjdk-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel
 
 echo "Downloading Elasticsearch"
 
@@ -149,7 +160,6 @@ chkconfig --add graylog2-server
 chkconfig graylog2-server on
 /etc/init.d/graylog2-server start
 
-
 #Install graylog2 web interface
 echo "Installing graylog2-web-interface"
 
@@ -159,26 +169,15 @@ ln -s graylog2-web-interface-0.11.0 graylog2-web-interface
 #Install Ruby
 echo "Installing Ruby"
 
-yum install -y gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel openssl-devel curl-devel
-echo insecure >> ~/.curlrc
-bash -s stable < <(curl -s -k https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
-rvm install 1.9.3
-
-useradd graylog2 -d /opt/graylog2-web -G rvm
-chown -R graylog2:graylog2 /opt/graylog2-web*
-
-useradd -G rvm root
-usermod -g rvm root
-source /etc/profile.d/rvm.sh
+curl -L https://get.rvm.io | bash -s stable --ruby
+source /usr/local/rvm/scripts/rvm
 
 #Install Gems
 echo "Installing Ruby Gems"
 
-rvm use 1.9.3
-
 cd /opt/graylog2-web-interface
-gem install bundler --no-ri --no-rdoc
-bundle install
+gem install bundle
+gem update
 
 #Set MongoDB Settings
 echo "Configuring MongoDB"
@@ -207,7 +206,6 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 echo "Installing Apache-Passenger Modules"
 
 yum -y install curl-devel
-rvm use 1.9.3
 gem install passenger
 gem install file-tail
 passenger-install-apache2-module --auto
