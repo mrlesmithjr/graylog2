@@ -28,11 +28,9 @@ SERVERALIAS=$IPADDY
 echo "Disabling CD Sources and Updating Apt Packages and Installing Pre-Reqs"
 sudo sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 sudo apt-get -qq update
-sudo apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties
 
-#Debian 6.0 Testing of all-in-one script
-#sudo apt-get -y install apt-file
-#sudo apt-file update
+# Install Pre-Reqs
+sudo apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common
 
 # Install Oracle Java 7
 echo "Installing Oracle Java 7"
