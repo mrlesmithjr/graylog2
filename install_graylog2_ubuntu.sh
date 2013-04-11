@@ -156,7 +156,7 @@ ln -s graylog2-web-interface-0.11.0 graylog2-web-interface
 echo "Installing Ruby"
 sudo apt-get -y install libgdbm-dev libffi-dev
 \curl -L https://get.rvm.io | bash -s stable
-source /home/$USER/.rvm/scripts/rvm
+source ~/.rvm/scripts/rvm
 rvm install 1.9.2
 
 # Install Ruby Gems
