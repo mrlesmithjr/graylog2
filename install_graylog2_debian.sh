@@ -160,7 +160,7 @@ echo "Installing Ruby"
 
 sudo apt-get -y install libgdbm-dev libffi-dev
 \curl -L https://get.rvm.io | bash -s stable
-source /home/$USER/.rvm/scripts/rvm
+source $HOME/.rvm/scripts/rvm
 rvm install 1.9.2
 
 #Install Gems
@@ -202,9 +202,9 @@ passenger-install-apache2-module --auto
 #Add passenger code
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
 
-echo "LoadModule passenger_module /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/httpd.conf
-echo "PassengerRoot /home/$USER/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/apache2/httpd.conf
-echo "PassengerRuby /home/$USER/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/apache2/httpd.conf
+echo "LoadModule passenger_module $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/httpd.conf
+echo "PassengerRoot $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/apache2/httpd.conf
+echo "PassengerRuby $HOME/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/apache2/httpd.conf
 
 #Restart Apache2
 echo "Restarting Apache2"
@@ -252,10 +252,10 @@ sudo sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
 sudo sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
 sudo sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
 sudo sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.conf
-echo '$template GRAYLOG2,"<%PRI%>%HOSTNAME% %TIMESTAMP% %syslogtag% %APP-NAME% %msg%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
+echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %HOSTNAME% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
 echo '$ActionForwardDefaultTemplate GRAYLOG2' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '$PreserveFQDN on' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '*.* @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
+echo '*.err;*.crit;*.alert;*.emerg;cron.*;auth,authpriv.* @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 
 #Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
