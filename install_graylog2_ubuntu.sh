@@ -156,7 +156,7 @@ ln -s graylog2-web-interface-0.11.0 graylog2-web-interface
 echo "Installing Ruby"
 sudo apt-get -y install libgdbm-dev libffi-dev
 \curl -L https://get.rvm.io | bash -s stable
-source ~/.rvm/scripts/rvm
+source $HOME/.rvm/scripts/rvm
 rvm install 1.9.2
 
 # Install Ruby Gems
@@ -193,9 +193,9 @@ passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
-echo "LoadModule passenger_module ~/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/mods-available/passenger.load
-echo "PassengerRoot ~/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/apache2/mods-available/passenger.conf
-echo "PassengerRuby ~/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/apache2/mods-available/passenger.conf
+echo "LoadModule passenger_module $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/mods-available/passenger.load
+echo "PassengerRoot $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/apache2/mods-available/passenger.conf
+echo "PassengerRuby $HOME/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/apache2/mods-available/passenger.conf
 
 # Enable passenger modules
 sudo a2enmod passenger
