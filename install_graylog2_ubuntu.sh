@@ -21,6 +21,10 @@ echo "Detecting IP Address"
 IPADDY="$(sudo ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 echo "Detected IP Address is $IPADDY"
 
+# CHANGE PASSWORD !!!
+USERNAME="username"
+PASSWORD="password123"
+
 SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
 
@@ -171,16 +175,16 @@ echo "
 production:
  host: localhost
  port: 27017
- username: grayloguser
- password: password123
+ username: $USERNAME
+ password: $PASSWORD
  database: graylog2" | tee /opt/graylog2-web-interface/config/mongoid.yml
 
 # Create MongoDB Users and Set Passwords
 echo Creating MongoDB Users and Passwords
-mongo admin --eval "db.addUser('admin', 'password123')"
-mongo admin --eval "db.auth('admin', 'password123')"
-mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
-mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
+mongo admin --eval "db.addUser('admin', '$PASSWORD')"
+mongo admin --eval "db.auth('admin', '$PASSWORD')"
+mongo graylog2 --eval "db.addUser('$USERNAME', '$PASSWORD')"
+mongo graylog2 --eval "db.auth('$USERNAME', '$PASSWORD')"
 
 # Test Install
 # cd /opt/graylog2-web-interface
@@ -234,7 +238,7 @@ sudo /etc/init.d/apache2 restart
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf, rsyslog.conf"
 sudo sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
-sudo sed -i -e 's|mongodb_password = 123|mongodb_password = password123|' /etc/graylog2.conf
+sudo sed -i -e 's|mongodb_password = 123|mongodb_password = $PASSWORD|' /etc/graylog2.conf
 sudo sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
 sudo sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
 sudo sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
