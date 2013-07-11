@@ -14,6 +14,8 @@ exec > >(tee "./graylog2/install_graylog2.log")
 # Do not run as root
 if [[ $EUID -eq 0 ]];then
 echo "DO NOT RUN AS ROOT or use SUDO"
+echo "Now exiting...Hit Return"
+echo "Run script as normal non-root user and without sudo"
 exit 1
 fi
 # Apache Settings
