@@ -12,12 +12,15 @@ exec > >(tee "./graylog2/install_graylog2.log")
 #
 # Checking if running as root
 # Do not run as root
+txtrst=$(tput sgr0) # Text reset
+txtred=$(tput setaf 1) # Red
 if [[ $EUID -eq 0 ]];then
 echo "DO NOT RUN AS ROOT or use SUDO"
 echo "Now exiting...Hit Return"
 echo "Run script as normal non-root user and without sudo"
 exit 1
 fi
+txtrst=$(tput sgr0) # Text reset
 # Apache Settings
 # change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP
 # which is the default
