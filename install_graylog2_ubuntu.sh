@@ -253,7 +253,9 @@ sudo sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.
 echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %HOSTNAME% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
 echo '$ActionForwardDefaultTemplate GRAYLOG2' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '$PreserveFQDN on' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '*.err;*.crit;*.alert;*.emerg;cron.*;auth,authpriv.* @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
+#echo '*.err;*.crit;*.alert;*.emerg;cron.*;auth,authpriv.* @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
+# Log syslog levels info and above
+echo '*.info @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 
 #Fixing issue with secret_toke in /opt/graylog2-web-interface/config/initializers/secret_token.rb
 sudo sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'|Graylog2WebInterface::Application.config.secret_token = 'b356d1af93673e37d6e21399d033d77c15354849fdde6d83fa0dca19608aa71f2fcd9d1f2784fb95e9400d8eeaf6dd9584d8d35b8f0b5c231369a70aac5e5777'|" /opt/graylog2-web-interface/config/initializers/secret_token.rb
