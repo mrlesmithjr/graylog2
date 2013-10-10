@@ -6,6 +6,12 @@
 # Logs stderr and stdout to separate files.
 exec 2> >(tee "./graylog2/install_graylog2.err")
 exec > >(tee "./graylog2/install_graylog2.log")
+
+# Setup mongo admin and db passwords
+$mongo_db_user="graylog2"
+$mongo_db_pw="password123"
+$mongo_admin_pw="password123"
+
 #
 # Apache Settings
 # Change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP
@@ -165,16 +171,16 @@ echo "
 production:
  host: localhost
  port: 27017
- username: grayloguser
- password: password123
+ username: $mongo_user
+ password: $mongo_user_pw
  database: graylog2" | tee /opt/graylog2-web-interface/config/mongoid.yml
 
 # Create MongoDB Users and Set Passwords
 echo "Creating MongoDB Users and Passwords"
-mongo admin --eval "db.addUser('admin', 'password123')"
-mongo admin --eval "db.auth('admin', 'password123')"
-mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
-mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
+mongo admin --eval "db.addUser('admin', '$mongo_admin_pw')"
+mongo admin --eval "db.auth('admin', '$mongo_admin_pw')"
+mongo graylog2 --eval "db.addUser('$mongo_user', '$mongo_user_pw')"
+mongo graylog2 --eval "db.auth('$mongo_user', '$mongo_user_pw')"
 
 useradd graylog2 -d /opt/graylog2-web-interface -G rvm
 chown -R graylog2:graylog2 /opt/graylog2-web-interface
@@ -234,7 +240,7 @@ echo "Restarting Apache2"
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf, rsyslog.conf"
 sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
-sed -i -e 's|mongodb_password = 123|mongodb_password = password123|' /etc/graylog2.conf
+sed -i -e 's|mongodb_password = 123|mongodb_password = $mongo_user_pw|' /etc/graylog2.conf
 sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
 sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
 sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
