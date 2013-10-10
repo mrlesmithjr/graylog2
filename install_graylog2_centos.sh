@@ -1,11 +1,31 @@
 #! /bin/bash
 #Provided by @mrlesmithjr
 #EveryThingShouldBeVirtual.com
-#
+
+#updated by Boardstretcher
+
+#initial centos config
+# update system 
+yum update -y 
+  
+# disable ip6 
+echo "" >> /etc/sysctl.conf 
+echo "# Disable IPV6" >> /etc/sysctl.conf 
+echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf 
+echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf 
+chkconfig ip6tables off 
+chkconfig  iptables off 
+  
+# disable selinux 
+sed -i 's/\=enforcing/\=disabled/g' /etc/selinux/config 
+
+# reboot
+
 # Setup logging
 # Logs stderr and stdout to separate files.
 exec 2> >(tee "./graylog2/install_graylog2.err")
 exec > >(tee "./graylog2/install_graylog2.log")
+
 #
 # Apache Settings
 # Change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP
@@ -13,7 +33,7 @@ exec > >(tee "./graylog2/install_graylog2.log")
 #SERVERNAME="x.x.x.x"
 #SERVERALIAS="x.x.x.x"
 #
-#
+
 echo "Detecting IP Address"
 IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 echo "Detected IP Address is $IPADDY"
@@ -22,10 +42,14 @@ SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
 
 # Adding EL6 Extra Packages
-su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm'
+yum install -y elrepo-release 
 
 # Installing all pre-reqs
-yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel java-1.7.0-openjdk java-1.7.0-openjdk-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel libyaml-devel libtoolbisonlibxml2-devel libxslt-devel libtool bison
+yum install -y gcc gcc-c++ gd gd-devel glibc glibc-common glibc-devel glibc-headers make automake httpd httpd-devel wget tar vim nc libcurl-devel openssl-devel zlib-devel zlib patch readline readline-devel libffi-devel curl-devel libyaml-devel libtoolbisonlibxml2-devel libxslt-devel libtool bison
+
+#install sun java (unless you like crashes, in that case use openjdk)
+curl -L http://javadl.sun.com/webapps/download/AutoDL?BundleId=80804 -o java.rpm
+rpm -ivh java.rpm
 
 echo "Downloading Elasticsearch"
 git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
@@ -180,6 +204,7 @@ useradd graylog2 -d /opt/graylog2-web-interface -G rvm
 chown -R graylog2:graylog2 /opt/graylog2-web-interface
 usermod -g rvm root
 source /etc/profile.d/rvm.sh
+bundle install
 
 # Test Install
 # cd /opt/graylog2-web-interface
@@ -194,9 +219,9 @@ passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/httpd/conf.d/passenger.conf"
-echo "LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p0/gems/passenger-3.0.19/ext/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p0/gems/passenger-3.0.19" | tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRuby /usr/local/rvm/gems/ruby-2.0.0-p0/gems/passenger-3.0.19/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p247/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p247/gems/passenger-4.0.20" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerDefaultRuby /usr/local/rvm/wrappers/ruby-2.0.0-p247/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
 
 # Assign permissions for Apache startup
 chown -R apache:apache /opt/graylog2-web-interface
