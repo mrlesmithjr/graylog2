@@ -163,15 +163,12 @@ ln -s graylog2-web-interface-0.12.0 graylog2-web-interface
 
 # Install Ruby
 echo "Installing Ruby"
-sudo apt-get -y install libgdbm-dev libffi-dev
-\curl -L https://get.rvm.io | bash -s stable
-source $HOME/.rvm/scripts/rvm
-rvm install 1.9.2
+sudo apt-get -y install libgdbm-dev libffi-dev ruby1.9.3
 
 # Install Ruby Gems
 echo "Installing Ruby Gems"
 cd /opt/graylog2-web-interface
-gem install bundler --no-ri --no-rdoc
+sudo gem install bundler --no-ri --no-rdoc
 bundle install
 
 # Set MongoDB Settings
@@ -197,21 +194,21 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 
 # Install Apache-passenger
 echo Installing Apache-Passenger Modules
-gem install passenger
-passenger-install-apache2-module --auto
+sudo gem install passenger
+sudo /var/lib/gems/1.9.1/gems/passenger-4.0.20/bin/passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
-echo "LoadModule passenger_module $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/mods-available/passenger.load
-echo "PassengerRoot $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/apache2/mods-available/passenger.conf
-echo "PassengerRuby $HOME/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/apache2/mods-available/passenger.conf
+echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/mods-available/passenger.load
+echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger-4.0.20" | sudo tee -a /etc/apache2/mods-available/passenger.conf
+echo "PassengerRuby /usr/bin/ruby1.9.1" | sudo tee -a /etc/apache2/mods-available/passenger.conf
 
 # Enable passenger modules
 sudo a2enmod passenger
 
 # Restart Apache2
 echo "Restarting Apache2"
-sudo /etc/init.d/apache2 restart
+sudo service apache2 restart
 # If apache fails and complains about unable to load mod_passenger.so check and verify that your passengerroot version matches
 
 # Configure Apache virtualhost
@@ -258,7 +255,7 @@ echo '$PreserveFQDN on' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 # Log syslog levels info and above
 echo '*.info @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 
-#Fixing issue with secret_toke in /opt/graylog2-web-interface/config/initializers/secret_token.rb
+#Fixing issue with secret_token in /opt/graylog2-web-interface/config/initializers/secret_token.rb
 sudo sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'|Graylog2WebInterface::Application.config.secret_token = 'b356d1af93673e37d6e21399d033d77c15354849fdde6d83fa0dca19608aa71f2fcd9d1f2784fb95e9400d8eeaf6dd9584d8d35b8f0b5c231369a70aac5e5777'|" /opt/graylog2-web-interface/config/initializers/secret_token.rb
 
 # Restart All Services
