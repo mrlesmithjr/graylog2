@@ -235,7 +235,7 @@ sudo service apache2 reload
 
 # Restart apache
 echo "Restarting Apache2"
-sudo /etc/init.d/apache2 restart
+sudo service apache2 restart
 
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf, rsyslog.conf"
