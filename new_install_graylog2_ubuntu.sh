@@ -315,6 +315,12 @@ elasticsearch {
 embedded => false
 host => "127.0.0.1"
 }
+output {
+  stdout { }
+  gelf {
+    facility => "logstash-gelf"
+    host => '127.0.0.1'
+  }
 }" | tee /etc/logstash/logstash.conf
 rm /etc/logstash/syslog.conf
 
