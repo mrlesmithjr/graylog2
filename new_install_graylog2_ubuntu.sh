@@ -42,16 +42,19 @@ apt-get -qq update
 apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common
 
 # Install Oracle Java 7
-echo "Installing Oracle Java 7"
-add-apt-repository -y ppa:webupd8team/java
-apt-get -qq update
-echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-apt-get -y install oracle-java7-installer
+# echo "Installing Oracle Java 7"
+# add-apt-repository -y ppa:webupd8team/java
+# apt-get -qq update
+# echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+# apt-get -y install oracle-java7-installer
 
 #echo "Downloading Elasticsearch"
 #sudo chown -R $USER:$USER /opt
 #cd /opt
 #git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
+
+# Install Java
+apt-get -y install --force-yes openjdk-7-jre-headless
 
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -86,7 +89,7 @@ ln -s graylog2-server-0.12.0/ graylog2-server
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.deb
 dpkg -i elasticsearch-0.90.5.deb
 
-sed -i '$a\cluster.name: "graylog2"' /etc/elasticsearch/elasticsearch.yml
+sed -i '$a\cluster.name: "default-cluster"' /etc/elasticsearch/elasticsearch.yml
 sed -i '$a\node.name: "elastic-master"' /etc/elasticsearch/elasticsearch.yml
 sed -i '$a\discovery.zen.ping.multicast.enabled: false' /etc/elasticsearch/elasticsearch.yml
 sed -i '$a\discovery.zen.ping.unicast.hosts: ["127.0.0.1:[9300-9400]"]' /etc/elasticsearch/elasticsearch.yml
@@ -110,12 +113,12 @@ apt-get -y install mongodb-10gen
 # Install graylog2-server
 echo "Installing graylog2-server"
 cd graylog2-server-0.12.0/
-#cp /opt/graylog2-server/elasticsearch.yml{.example,}
-#ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
+cp /opt/graylog2-server/elasticsearch.yml{.example,}
+ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
 cp /opt/graylog2-server/graylog2.conf{.example,}
 ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
-sed -i -e 's|elasticsearch_config_file = /etc/graylog2-elasticsearch.yml|elasticsearch_config_file = /etc/elasticsearch/elasticsearch.yml|' /opt/graylog2-server/graylog2.conf
+# sed -i -e 's|elasticsearch_config_file = /etc/graylog2-elasticsearch.yml|elasticsearch_config_file = /etc/elasticsearch/elasticsearch.yml|' /opt/graylog2-server/graylog2.conf
 # Create graylog2-server startup script
 echo "Creating /etc/init.d/graylog2-server startup script"
 (
@@ -291,9 +294,9 @@ cd logstash-packaging
 ./package.sh
 cd ..
 dpkg -i logstash_*.deb
-sed -i -e 's|export JAVA_HOME=/usr/lib/jvm/default-java|export JAVA_HOME=/usr/lib/jvm/java-7-oracle|' /etc/init.d/logstash
-
-echo "
+sed -i -e 's|export JAVA_HOME=/usr/lib/jvm/default-java|export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64|' /etc/init.d/logstash
+(
+cat <<'EOF'
 input {
 udp {
 type => "syslog"
@@ -321,7 +324,10 @@ output {
     facility => "logstash-gelf"
     host => '127.0.0.1'
   }
-}" | tee /etc/logstash/logstash.conf
+}
+EOF
+) | sudo tee /etc/logstash/logstash.conf
+
 rm /etc/logstash/syslog.conf
 
 service logstash restart
