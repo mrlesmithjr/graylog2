@@ -163,7 +163,7 @@ echo "Usage $0 {start|stop|restart}"
 RETVAL=1
 esac
 EOF
-) | sudo tee /etc/init.d/graylog2-server
+) | tee /etc/init.d/graylog2-server
 
 # Make graylog2-server executable
 chmod +x /etc/init.d/graylog2-server
