@@ -177,7 +177,7 @@ ln -s graylog2-web-interface-0.12.0 graylog2-web-interface
 
 # Install Ruby
 echo "Installing Ruby"
-apt-get -y install libgdbm-dev libffi-dev ruby1.9.3
+apt-get -y install libgdbm-dev libffi-dev ruby1.9.3 ruby1.9.1-dev
 
 # Install Ruby Gems
 echo "Installing Ruby Gems"
@@ -280,6 +280,79 @@ service graylog2-server restart
 service rsyslog restart
 service apache2 restart
 
+# Install Logstash 
+gem install fpm
+cd ~
+git clone https://github.com/Yuav/logstash-packaging.git --depth=1
+cd logstash-packaging
+./package.sh
+cd ..
+dpkg -i logstash_*.deb
+sed -i -e 's|export JAVA_HOME=/usr/lib/jvm/default-java|export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64|' /etc/init.d/logstash
+
+cat <<'EOF'
+input {
+udp {
+type => "syslog"
+port => "5544"
+}
+}
+
+
+filter {
+grep {
+type => "syslog"
+match => [ "@message", "dhclient:" ]
+negate => true
+}
+}
+
+output {
+elasticsearch {
+embedded => false
+host => "127.0.0.1"
+}
+}
+EOF
+) | sudo tee /etc/logstash/logstash.conf
+rm /etc/logstash/syslog.conf
+
+service logstash restart
+
+# Install and configure the Kibana frontend
+cd /opt
+git clone --branch=kibana-ruby https://github.com/rashidkpc/Kibana.git
+cd /opt/Kibana
+sed -i 's#KibanaHost =.*#KibanaHost = "0.0.0.0"#' KibanaConfig.rb
+sed -i 's#KibanaPort =.*#KibanaPort = 8080#' KibanaConfig.rb
+gem install bundler
+bundle install
+
+# Create Kibana conf file
+sudo tee -a /etc/init/kibana.conf <<EOF
+# Kibana
+#
+
+description Kibana:"logstash frontend"
+
+start on virtual-filesystems
+stop on runlevel [06]
+
+respawn
+respawn limit 5 30
+
+chdir /opt/Kibana
+
+console log
+
+script
+  exec ruby kibana.rb
+end script
+EOF
+
+initctl reload-configuration
+start kibana
+
 # All Done
 echo "Installation has completed!!"
 echo "Browse to IP address of this Graylog2 Server Used for Installation"
@@ -287,5 +360,6 @@ echo "IP Address detected from system is $IPADDY"
 echo "Browse to http://$IPADDY"
 echo "You Entered $SERVERNAME During Install"
 echo "Browse to http://$SERVERNAME If Different"
+echo "Browse to http://$IPADDY:8080 to access Kibana/logstash"
 echo "EveryThingShouldBeVirtual.com"
 echo "@mrlesmithjr"
