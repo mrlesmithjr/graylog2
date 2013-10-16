@@ -45,7 +45,7 @@ apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev lib
 echo "Installing Oracle Java 7"
 add-apt-repository -y ppa:webupd8team/java
 apt-get -qq update
-echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 apt-get -y install oracle-java7-installer
 
 #echo "Downloading Elasticsearch"
@@ -179,7 +179,7 @@ ln -s graylog2-web-interface-0.12.0 graylog2-web-interface
 
 # Install Ruby
 echo "Installing Ruby"
-apt-get -y install libgdbm-dev libffi-dev ruby1.9.3 ruby1.9.1-dev
+apt-get -y install libgdbm-dev libffi-dev ruby1.9.3
 
 # Install Ruby Gems
 echo "Installing Ruby Gems"
@@ -264,9 +264,9 @@ sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
 sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
 # echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %HOSTNAME% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
-echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
-echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+#echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | sudo tee /etc/rsyslog.d/32-graylog2.conf
+#echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+#echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 #echo '*.err;*.crit;*.alert;*.emerg;cron.*;auth,authpriv.* @localhost:10514' | sudo tee -a  /etc/rsyslog.d/32-graylog2.conf
 # Log syslog levels info and above
 # echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
