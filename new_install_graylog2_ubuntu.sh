@@ -55,6 +55,7 @@ apt-get -y install oracle-java7-installer
 
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
+cd /opt
 #wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
 wget https://github.com/Graylog2/graylog2-server/releases/download/0.12.0/graylog2-server-0.12.0.tar.gz
 wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.12.0/graylog2-web-interface-0.12.0.tar.gz
@@ -214,9 +215,9 @@ gem install passenger
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
-echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/mods-available/passenger.load
-echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger-4.0.20" | sudo tee -a /etc/apache2/mods-available/passenger.conf
-echo "PassengerRuby /usr/bin/ruby1.9.1" | sudo tee -a /etc/apache2/mods-available/passenger.conf
+echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so" | tee -a /etc/apache2/mods-available/passenger.load
+echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger-4.0.20" | tee -a /etc/apache2/mods-available/passenger.conf
+echo "PassengerRuby /usr/bin/ruby1.9.1" | tee -a /etc/apache2/mods-available/passenger.conf
 
 # Enable passenger modules
 a2enmod passenger
@@ -240,7 +241,7 @@ Options -MultiViews
 ErrorLog /var/log/apache2/error.log
 LogLevel warn
 CustomLog /var/log/apache2/access.log combined
-</VirtualHost>" | sudo tee /etc/apache2/sites-available/graylog2
+</VirtualHost>" | tee /etc/apache2/sites-available/graylog2
 
 # Enable virtualhost
 echo "Enabling Apache VirtualHost Settings"
@@ -291,7 +292,7 @@ cd ..
 dpkg -i logstash_*.deb
 sed -i -e 's|export JAVA_HOME=/usr/lib/jvm/default-java|export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64|' /etc/init.d/logstash
 
-cat <<'EOF'
+echo "
 input {
 udp {
 type => "syslog"
@@ -313,9 +314,7 @@ elasticsearch {
 embedded => false
 host => "127.0.0.1"
 }
-}
-EOF
-) | sudo tee /etc/logstash/logstash.conf
+}" | tee /etc/logstash/logstash.conf
 rm /etc/logstash/syslog.conf
 
 service logstash restart
@@ -330,7 +329,7 @@ gem install bundler
 bundle install
 
 # Create Kibana conf file
-sudo tee -a /etc/init/kibana.conf <<EOF
+tee -a /etc/init/kibana.conf <<EOF
 # Kibana
 #
 
