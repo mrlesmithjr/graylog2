@@ -49,7 +49,7 @@ echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /u
 apt-get -y install oracle-java7-installer
 
 echo "Downloading Elasticsearch"
-chown -R $USER:$USER /opt
+chown -R nobody:nogroup /opt
 cd /opt
 git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
 
