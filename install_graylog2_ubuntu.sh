@@ -5,6 +5,7 @@
 #
 # Ubuntu Install Script
 #
+set -e
 # Setup logging
 # Logs stderr and stdout to separate files.
 exec 2> >(tee "./graylog2/install_graylog2.err")
@@ -260,8 +261,9 @@ sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'
 
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
-chown -R www-data:www-data /opt/graylog2-web-interface
-chown -R www-data:www-data /opt/graylog2-web-interface/
+chown -R root:root /opt/elasticsearch*
+chown -R root:root /opt/graylog2*
+chown -R www-data:www-data /opt/graylog2-web-interface*
 
 # Cleaning up /opt
 echo "Cleaning up"
