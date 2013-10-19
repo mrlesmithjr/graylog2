@@ -27,3 +27,8 @@ Within the github repository there is also a script to automate a Debian 6.0 Gra
 chmod +x ./graylog2/install_graylog2_debian.sh
 cd ~
 ./graylog2/install_graylog2_debian.sh
+
+There is also a CentOS script for installing Graylog2. Thanks to boardstretcher for the help on this. https://github.com/boardstretcher
+
+chmod +x ./graylog2/install_graylog2_centos.sh
+./graylog2/install_graylog2_centos.sh
