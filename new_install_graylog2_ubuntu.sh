@@ -285,7 +285,7 @@ chown -R www-data:www-data /opt/graylog2-web-interface/
 
 # Cleaning up /opt
 echo "Cleaning up"
-rm /opt/elasticsearch*.tar.gz
+# rm /opt/elasticsearch*.tar.gz
 rm /opt/graylog2-server*.tar.gz
 rm /opt/graylog2-web-interface*.tar.gz
 
