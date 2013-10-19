@@ -278,6 +278,17 @@ echo '*.* @localhost:5544' | tee -a /etc/rsyslog.d/50-default.conf
 #Fixing issue with secret_token in /opt/graylog2-web-interface/config/initializers/secret_token.rb
 sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'|Graylog2WebInterface::Application.config.secret_token = 'b356d1af93673e37d6e21399d033d77c15354849fdde6d83fa0dca19608aa71f2fcd9d1f2784fb95e9400d8eeaf6dd9584d8d35b8f0b5c231369a70aac5e5777'|" /opt/graylog2-web-interface/config/initializers/secret_token.rb
 
+chown -R root:root /opt/elasticsearch*
+chown -R root:root /opt/graylog2*
+chown -R www-data:www-data /opt/graylog2-web-interface
+chown -R www-data:www-data /opt/graylog2-web-interface/
+
+# Cleaning up /opt
+echo "Cleaning up"
+rm /opt/elasticsearch*.tar.gz
+rm /opt/graylog2-server*.tar.gz
+rm /opt/graylog2-web-interface*.tar.gz
+
 # Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
 service elasticsearch restart
