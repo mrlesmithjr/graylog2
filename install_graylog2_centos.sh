@@ -188,8 +188,8 @@ gem install file-tail
 passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
-echo "LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p247/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
-echo "PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p247/gems/passenger-4.0.20" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p247/gems/passenger-4.0.21/buildout/apache2/mod_passenger.so" | tee -a /etc/httpd/conf.d/passenger.conf
+echo "PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p247/gems/passenger-4.0.21" | tee -a /etc/httpd/conf.d/passenger.conf
 echo "PassengerDefaultRuby /usr/local/rvm/wrappers/ruby-2.0.0-p247/ruby" | tee -a /etc/httpd/conf.d/passenger.conf
 
 # Assign permissions for Apache startup

@@ -202,8 +202,8 @@ passenger-install-apache2-module --auto
 #Add passenger code
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
 
-echo "LoadModule passenger_module $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/httpd.conf
-echo "PassengerRoot $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-3.0.18" | sudo tee -a /etc/apache2/httpd.conf
+echo "LoadModule passenger_module $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-4.0.21/ext/apache2/mod_passenger.so" | sudo tee -a /etc/apache2/httpd.conf
+echo "PassengerRoot $HOME/.rvm/gems/ruby-1.9.2-p320/gems/passenger-4.0.21" | sudo tee -a /etc/apache2/httpd.conf
 echo "PassengerRuby $HOME/.rvm/wrappers/ruby-1.9.2-p320/ruby" | sudo tee -a /etc/apache2/httpd.conf
 
 #Restart Apache2
