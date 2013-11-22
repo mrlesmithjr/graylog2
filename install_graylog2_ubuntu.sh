@@ -35,7 +35,6 @@ SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
 
 #Ruby Passenger Version
-passengerver="4.0.25"
 
 # Disable CD Sources in /etc/apt/sources.list
 echo "Disabling CD Sources and Updating Apt Packages and Installing Pre-Reqs"
@@ -199,12 +198,12 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 # Install Apache-passenger
 echo Installing Apache-Passenger Modules
 gem install passenger
-/var/lib/gems/1.9.1/gems/passenger-$passengerver/bin/passenger-install-apache2-module --auto
+/var/lib/gems/1.9.1/gems/passenger-4.0.25/bin/passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
-echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger-$passengerver/buildout/apache2/mod_passenger.so" | tee -a /etc/apache2/mods-available/passenger.load
-echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger-$passengerver" | tee -a /etc/apache2/mods-available/passenger.conf
+echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger-4.0.25/buildout/apache2/mod_passenger.so" | tee -a /etc/apache2/mods-available/passenger.load
+echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger-4.0.25" | tee -a /etc/apache2/mods-available/passenger.conf
 echo "PassengerRuby /usr/bin/ruby1.9.1" | tee -a /etc/apache2/mods-available/passenger.conf
 
 # Enable passenger modules
