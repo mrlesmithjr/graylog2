@@ -99,11 +99,12 @@ sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /opt/graylog2-
 sed -i -e 's|root_password_sha2 =|root_password_sha2 = ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f|' /opt/graylog2-server/graylog2.conf
 sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /opt/graylog2-server/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
+./opt/graylog2-server/bin/graylog2ctl start
 
 # Create graylog2-server startup script
-echo "Creating /etc/init.d/graylog2-server startup script"
-(
-cat <<'EOF'
+#echo "Creating /etc/init.d/graylog2-server startup script"
+#(
+#cat <<'EOF'
 #!/bin/sh
 #
 # graylog2-server: graylog2 message collector
@@ -111,50 +112,50 @@ cat <<'EOF'
 # chkconfig: - 98 02
 # description: This daemon listens for syslog and GELF messages and stores them in mongodb
 #
-CMD=$1
-NOHUP=`which nohup`
-JAVA_CMD=/usr/bin/java
-GRAYLOG2_SERVER_HOME=/opt/graylog2-server
-start() {
- echo "Starting graylog2-server ..."
-$NOHUP $JAVA_CMD -jar $GRAYLOG2_SERVER_HOME/graylog2-server.jar > /var/log/graylog2.log 2>&1 &
-}
+#CMD=$1
+#NOHUP=`which nohup`
+#JAVA_CMD=/usr/bin/java
+#GRAYLOG2_SERVER_HOME=/opt/graylog2-server
+#start() {
+# echo "Starting graylog2-server ..."
+#$NOHUP $JAVA_CMD -jar $GRAYLOG2_SERVER_HOME/graylog2-server.jar > /var/log/graylog2.log 2>&1 &
+#}
 
-stop() {
-PID=`cat /tmp/graylog2.pid`
-echo "Stopping graylog2-server ($PID) ..."
-kill $PID
-}
+#stop() {
+#PID=`cat /tmp/graylog2.pid`
+#echo "Stopping graylog2-server ($PID) ..."
+#kill $PID
+#}
 
-restart() {
-echo "Restarting graylog2-server ..."
-stop
-start
-}
+#restart() {
+#echo "Restarting graylog2-server ..."
+#stop
+#start
+#}
 
-case "$CMD" in
-start)
-start
-;;
-stop)
-stop
-;;
-restart)
-restart
-;;
-*)
-echo "Usage $0 {start|stop|restart}"
-RETVAL=1
-esac
-EOF
-) | tee /etc/init.d/graylog2-server
+#case "$CMD" in
+#start)
+#start
+#;;
+#stop)
+#stop
+#;;
+#restart)
+#restart
+#;;
+#*)
+#echo "Usage $0 {start|stop|restart}"
+#RETVAL=1
+#esac
+#EOF
+#) | tee /etc/init.d/graylog2-server
 
 # Make graylog2-server executable
-chmod +x /etc/init.d/graylog2-server
+#chmod +x /etc/init.d/graylog2-server
 
 # Start graylog2-server on bootup
-echo "Making graylog2-server startup on boot"
-update-rc.d graylog2-server defaults
+#echo "Making graylog2-server startup on boot"
+#update-rc.d graylog2-server defaults
 
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
@@ -266,6 +267,7 @@ sed -i -e 's|graylog2-server.uris=""|graylog2-server.uris="http://127.0.0.1:1290
 app_secret=$(pwgen -s 96)
 sed -i -e 's|application.secret=""|application.secret="'$app_secret'"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
+
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
 chown -R root:root /opt/elasticsearch*
@@ -282,7 +284,7 @@ rm /opt/graylog2-web-interface*.*gz
 echo "Restarting All Services Required for Graylog2 to work"
 service elasticsearch restart
 service mongodb restart
-service graylog2-server restart
+#service graylog2-server restart
 service rsyslog restart
 #service apache2 restart
 
