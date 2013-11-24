@@ -42,7 +42,7 @@ sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 apt-get -qq update
 
 # Install Pre-Reqs
-apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre
+apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
 
 
 echo "Downloading Elasticsearch"
@@ -90,10 +90,14 @@ apt-get -y install mongodb-10gen
 # Install graylog2-server
 echo "Installing graylog2-server"
 cd graylog2-server/
-cp /opt/graylog2-server/elasticsearch.yml{.example,}
-ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
+#cp /opt/graylog2-server/elasticsearch.yml{.example,}
+#ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
 cp /opt/graylog2-server/graylog2.conf{.example,}
 ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
+pass_secret=$(pwgen -s 96)
+sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /opt/graylog2-server/graylog2.conf
+sed -i -e 's|root_password_sha2 =|root_password_sha2 = ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f|' /opt/graylog2-server/graylog2.conf
+sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /opt/graylog2-server/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
 
 # Create graylog2-server startup script
@@ -257,7 +261,9 @@ echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 
 # Fixing issue with secret_token in /opt/graylog2-web-interface/config/initializers/secret_token.rb
-sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'|Graylog2WebInterface::Application.config.secret_token = 'b356d1af93673e37d6e21399d033d77c15354849fdde6d83fa0dca19608aa71f2fcd9d1f2784fb95e9400d8eeaf6dd9584d8d35b8f0b5c231369a70aac5e5777'|" /opt/graylog2-web-interface/config/initializers/secret_token.rb
+#sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'|Graylog2WebInterface::Application.config.secret_token = 'b356d1af93673e37d6e21399d033d77c15354849fdde6d83fa0dca19608aa71f2fcd9d1f2784fb95e9400d8eeaf6dd9584d8d35b8f0b5c231369a70aac5e5777'|" /opt/graylog2-web-interface/config/initializers/secret_token.rb
+app_secret=$(pwgen -s 96)
+sed -i -e 's|application.secret=""|application.secret="'$app_secret'"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
