@@ -99,7 +99,7 @@ sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /opt/graylog2-
 sed -i -e 's|root_password_sha2 =|root_password_sha2 = ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f|' /opt/graylog2-server/graylog2.conf
 sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /opt/graylog2-server/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
-./opt/graylog2-server/bin/graylog2ctl start
+/opt/graylog2-server/bin/graylog2ctl start
 
 # Create graylog2-server startup script
 #echo "Creating /etc/init.d/graylog2-server startup script"
