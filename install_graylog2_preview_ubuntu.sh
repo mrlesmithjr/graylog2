@@ -42,7 +42,7 @@ sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 apt-get -qq update
 
 # Install Pre-Reqs
-apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev apache2-prefork-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
+apt-get -y install git curl libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
 
 
 echo "Downloading Elasticsearch"
@@ -163,14 +163,14 @@ ln -s graylog2-web-interface-0.2*/ graylog2-web-interface
 mkdir  /opt/graylog2-web-interface/tmp/
 
 # Install Ruby
-echo "Installing Ruby"
-apt-get -y install libgdbm-dev libffi-dev ruby1.9.3
+#echo "Installing Ruby"
+#apt-get -y install libgdbm-dev libffi-dev ruby1.9.3
 
 # Install Ruby Gems
-echo "Installing Ruby Gems"
-cd /opt/graylog2-web-interface
-gem install bundler --no-ri --no-rdoc
-bundle install
+#echo "Installing Ruby Gems"
+#cd /opt/graylog2-web-interface
+#gem install bundler --no-ri --no-rdoc
+#bundle install
 
 # Set MongoDB Settings
 echo "Configuring MongoDB"
@@ -194,53 +194,53 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 # RAILS_ENV=production script/rails server
 
 # Install Apache-passenger
-echo "Installing Apache-Passenger Modules"
-gem install passenger
+#echo "Installing Apache-Passenger Modules"
+#gem install passenger
 # Create Passenger symbolic link to get around versions changing
-ln -s /var/lib/gems/1.9.1/gems/passenger-4* /var/lib/gems/1.9.1/gems/passenger
+#ln -s /var/lib/gems/1.9.1/gems/passenger-4* /var/lib/gems/1.9.1/gems/passenger
 # Build Apache2 passenger module
-/var/lib/gems/1.9.1/gems/passenger/bin/passenger-install-apache2-module --auto
+#/var/lib/gems/1.9.1/gems/passenger/bin/passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
-echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
-echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger/buildout/apache2/mod_passenger.so" | tee -a /etc/apache2/mods-available/passenger.load
-echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger" | tee -a /etc/apache2/mods-available/passenger.conf
-echo "PassengerRuby /usr/bin/ruby1.9.1" | tee -a /etc/apache2/mods-available/passenger.conf
+#echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
+#echo "LoadModule passenger_module /var/lib/gems/1.9.1/gems/passenger/buildout/apache2/mod_passenger.so" | tee -a /etc/apache2/mods-available/passenger.load
+#echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger" | tee -a /etc/apache2/mods-available/passenger.conf
+#echo "PassengerRuby /usr/bin/ruby1.9.1" | tee -a /etc/apache2/mods-available/passenger.conf
 
 # Enable passenger modules
-echo "Enabling Apache Passenger module"
-a2enmod passenger
+#echo "Enabling Apache Passenger module"
+#a2enmod passenger
 
 # Restart Apache2
-echo "Restarting Apache2"
-service apache2 restart
+#echo "Restarting Apache2"
+#service apache2 restart
 # If apache fails and complains about unable to load mod_passenger.so check and verify that your passengerroot version matches
 
 # Configure Apache virtualhost
-echo "Configuring Apache VirtualHost"
-echo "
-<VirtualHost *:80>
-ServerName ${SERVERNAME}
-ServerAlias ${SERVERALIAS}
-DocumentRoot /opt/graylog2-web-interface/public
+#echo "Configuring Apache VirtualHost"
+#echo "
+#<VirtualHost *:80>
+#ServerName ${SERVERNAME}
+#ServerAlias ${SERVERALIAS}
+#DocumentRoot /opt/graylog2-web-interface/public
 
 #Allow from all
-Options -MultiViews
+#Options -MultiViews
 
-ErrorLog /var/log/apache2/error.log
-LogLevel warn
-CustomLog /var/log/apache2/access.log combined
-</VirtualHost>" | tee /etc/apache2/sites-available/graylog2
+#ErrorLog /var/log/apache2/error.log
+#LogLevel warn
+#CustomLog /var/log/apache2/access.log combined
+#</VirtualHost>" | tee /etc/apache2/sites-available/graylog2
 
 # Enable virtualhost
-echo "Enabling Apache VirtualHost Settings"
-a2dissite 000-default
-a2ensite graylog2
-service apache2 reload
+#echo "Enabling Apache VirtualHost Settings"
+#a2dissite 000-default
+#a2ensite graylog2
+#service apache2 reload
 
 # Restart apache
-echo "Restarting Apache2"
-service apache2 restart
+#echo "Restarting Apache2"
+#service apache2 restart
 
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf, rsyslog.conf"
@@ -262,9 +262,10 @@ echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 
 # Fixing issue with secret_token in /opt/graylog2-web-interface/config/initializers/secret_token.rb
 #sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'|Graylog2WebInterface::Application.config.secret_token = 'b356d1af93673e37d6e21399d033d77c15354849fdde6d83fa0dca19608aa71f2fcd9d1f2784fb95e9400d8eeaf6dd9584d8d35b8f0b5c231369a70aac5e5777'|" /opt/graylog2-web-interface/config/initializers/secret_token.rb
+sed -i -e 's|graylog2-server.uris=""|graylog2-server.uris="http://127.0.0.1:12900/"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 app_secret=$(pwgen -s 96)
 sed -i -e 's|application.secret=""|application.secret="'$app_secret'"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
-
+nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
 chown -R root:root /opt/elasticsearch*
@@ -283,14 +284,14 @@ service elasticsearch restart
 service mongodb restart
 service graylog2-server restart
 service rsyslog restart
-service apache2 restart
+#service apache2 restart
 
 # All Done
 echo "Installation has completed!!"
 echo "Browse to IP address of this Graylog2 Server Used for Installation"
 echo "IP Address detected from system is $IPADDY"
-echo "Browse to http://$IPADDY"
+echo "Browse to http://$IPADDY:9000"
 echo "You Entered $SERVERNAME During Install"
-echo "Browse to http://$SERVERNAME If Different"
+echo "Browse to http://$SERVERNAME:9000 If Different"
 echo "EveryThingShouldBeVirtual.com"
 echo "@mrlesmithjr"
