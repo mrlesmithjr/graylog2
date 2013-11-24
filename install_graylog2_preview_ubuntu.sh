@@ -271,13 +271,13 @@ nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
 
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
-chown -R root:root /opt/elasticsearch*
+#chown -R root:root /opt/elasticsearch*
 chown -R root:root /opt/graylog2*
 chown -R www-data:www-data /opt/graylog2-web-interface*
 
 # Cleaning up /opt
 echo "Cleaning up"
-rm /opt/elasticsearch*.*gz
+#rm /opt/elasticsearch*.*gz
 rm /opt/graylog2-server*.*gz
 rm /opt/graylog2-web-interface*.*gz
 
