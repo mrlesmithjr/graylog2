@@ -185,7 +185,7 @@ production:
  database: graylog2" | tee /opt/graylog2-web-interface/config/mongoid.yml
 
 # Create MongoDB Users and Set Passwords
-echo Creating MongoDB Users and Passwords
+echo "Creating MongoDB Users and Passwords"
 mongo admin --eval "db.addUser('admin', 'password123')"
 mongo admin --eval "db.auth('admin', 'password123')"
 mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
@@ -196,7 +196,7 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 # RAILS_ENV=production script/rails server
 
 # Install Apache-passenger
-echo Installing Apache-Passenger Modules
+echo "Installing Apache-Passenger Modules"
 gem install passenger
 # Create Passenger symbolic link to get around versions changing
 ln -s /var/lib/gems/1.9.1/gems/passenger-4* /var/lib/gems/1.9.1/gems/passenger
@@ -210,6 +210,7 @@ echo "PassengerRoot /var/lib/gems/1.9.1/gems/passenger" | tee -a /etc/apache2/mo
 echo "PassengerRuby /usr/bin/ruby1.9.1" | tee -a /etc/apache2/mods-available/passenger.conf
 
 # Enable passenger modules
+echo "Enabling Apache Passenger module"
 a2enmod passenger
 
 # Restart Apache2
