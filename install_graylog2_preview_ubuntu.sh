@@ -42,7 +42,7 @@ sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 apt-get -qq update
 
 # Install Pre-Reqs
-apt-get -y install git curl libcurl4-openssl-dev apache2-prefork-dev libapr1-dev libcurl4-openssl-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
+apt-get -y install git curl libcurl4-openssl-dev libapr1-dev libcurl4-openssl-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
 
 
 echo "Downloading Elasticsearch"
@@ -52,7 +52,7 @@ git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
 
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.6.tar.gz
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.deb
 wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.6/graylog2-server-0.20.0-preview.6.tgz
 wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.6/graylog2-web-interface-0.20.0-preview.6.tgz
 
@@ -65,17 +65,18 @@ done
 
 # Create Symbolic Links
 echo "Creating SymLinks for elasticsearch and graylog2-server"
-ln -s elasticsearch-0.90*/ elasticsearch
+#ln -s elasticsearch-0.90*/ elasticsearch
 ln -s graylog2-server-0.2*/ graylog2-server
 
 # Install elasticsearch
 echo "Installing elasticsearch"
-mv *servicewrapper*/service elasticsearch/bin/
-rm -Rf *servicewrapper*
-/opt/elasticsearch/bin/service/elasticsearch install
-ln -s `readlink -f elasticsearch/bin/service/elasticsearch` /usr/bin/elasticsearch_ctl
-sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /opt/elasticsearch/config/elasticsearch.yml
-/etc/init.d/elasticsearch start
+dpkg -i elasticsearch-0.90.7.deb
+#mv *servicewrapper*/service elasticsearch/bin/
+#rm -Rf *servicewrapper*
+#/opt/elasticsearch/bin/service/elasticsearch install
+#ln -s `readlink -f elasticsearch/bin/service/elasticsearch` /usr/bin/elasticsearch_ctl
+sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
+#/etc/init.d/elasticsearch start
 
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
@@ -161,7 +162,7 @@ sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-serv
 echo "Installing graylog2-web-interface"
 cd /opt/
 ln -s graylog2-web-interface-0.2*/ graylog2-web-interface
-mkdir  /opt/graylog2-web-interface/tmp/
+# mkdir  /opt/graylog2-web-interface/tmp/
 
 # Install Ruby
 #echo "Installing Ruby"
