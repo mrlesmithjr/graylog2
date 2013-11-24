@@ -247,7 +247,7 @@ ln -s graylog2-web-interface-0.2*/ graylog2-web-interface
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf, rsyslog.conf"
 sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
-sed -i -e 's|mongodb_password = 123|mongodb_password = password123|' /etc/graylog2.conf
+#sed -i -e 's|mongodb_password = 123|mongodb_password = password123|' /etc/graylog2.conf
 sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
 sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
 sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
