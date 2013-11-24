@@ -173,21 +173,21 @@ mkdir  /opt/graylog2-web-interface/tmp/
 #bundle install
 
 # Set MongoDB Settings
-echo "Configuring MongoDB"
-echo "
-production:
- host: localhost
- port: 27017
- username: grayloguser
- password: password123
- database: graylog2" | tee /opt/graylog2-web-interface/config/mongoid.yml
+#echo "Configuring MongoDB"
+#echo "
+#production:
+# host: localhost
+# port: 27017
+# username: grayloguser
+# password: password123
+# database: graylog2" | tee /opt/graylog2-web-interface/config/mongoid.yml
 
 # Create MongoDB Users and Set Passwords
-echo "Creating MongoDB Users and Passwords"
-mongo admin --eval "db.addUser('admin', 'password123')"
-mongo admin --eval "db.auth('admin', 'password123')"
-mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
-mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
+#echo "Creating MongoDB Users and Passwords"
+#mongo admin --eval "db.addUser('admin', 'password123')"
+#mongo admin --eval "db.auth('admin', 'password123')"
+#mongo graylog2 --eval "db.addUser('grayloguser', 'password123')"
+#mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 
 # Test Install
 # cd /opt/graylog2-web-interface
