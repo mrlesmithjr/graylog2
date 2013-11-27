@@ -254,11 +254,9 @@ sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
 sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
-# echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %HOSTNAME% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
 echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
 echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
-#echo '*.err;*.crit;*.alert;*.emerg;cron.*;auth,authpriv.* @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 # Log syslog levels info and above
 echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 
@@ -294,3 +292,4 @@ echo "You Entered $SERVERNAME During Install"
 echo "Browse to http://$SERVERNAME If Different"
 echo "EveryThingShouldBeVirtual.com"
 echo "@mrlesmithjr"
+echo "Enjoy!!!"
