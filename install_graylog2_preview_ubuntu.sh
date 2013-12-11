@@ -84,7 +84,6 @@ sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /etc/graylog2.c
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /etc/graylog2.conf
 sed -i -e 's|#elasticsearch_discovery_zen_ping_multicast_enabled = false|elasticsearch_discovery_zen_ping_multicast_enabled = false|' /etc/graylog2.conf
 sed -i -e 's|#elasticsearch_discovery_zen_ping_unicast_hosts = 192.168.1.203:9300|elasticsearch_discovery_zen_ping_unicast_hosts = 127.0.0.1:9300|' /etc/graylog2.conf
-/opt/graylog2-server/bin/graylog2ctl start
 
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
@@ -108,8 +107,7 @@ sed -i -e 's|graylog2-server.uris=""|graylog2-server.uris="http://127.0.0.1:1290
 app_secret=$(pwgen -s 96)
 sed -i -e 's|application.secret=""|application.secret="'$app_secret'"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 
-# Starting Graylog2 Web Interface
-nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
+
 
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
@@ -127,6 +125,14 @@ echo "Restarting All Services Required for Graylog2 to work"
 service elasticsearch restart
 service mongodb restart
 service rsyslog restart
+
+# Starting Graylog2 Server
+/opt/graylog2-server/bin/graylog2ctl start
+
+# Starting Graylog2 Web Interface
+echo "Waiting 2 Minutes for Graylog2 Server to start before starting web interface"
+sleep 2m
+nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
 
 # All Done
 echo "Installation has completed!!"
