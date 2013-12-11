@@ -32,14 +32,17 @@ sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 apt-get -qq update
 
 # Install Pre-Reqs
-apt-get -y install git curl libcurl4-openssl-dev libapr1-dev libcurl4-openssl-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
+# apt-get -y install git curl libcurl4-openssl-dev libapr1-dev libcurl4-openssl-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
+apt-get -y install git curl build-essential openjdk-7-jre pwgen
 
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.deb
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.6/graylog2-server-0.20.0-preview.6.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.6/graylog2-web-interface-0.20.0-preview.6.tgz
+#wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.6/graylog2-server-0.20.0-preview.6.tgz
+#wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.6/graylog2-web-interface-0.20.0-preview.6.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.7/graylog2-server-0.20.0-preview.7.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.7/graylog2-web-interface-0.20.0-preview.7.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -71,12 +74,16 @@ apt-get -y install mongodb-10gen
 echo "Installing graylog2-server"
 cd graylog2-server/
 cp /opt/graylog2-server/graylog2.conf{.example,}
-ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
+mv graylog2.conf /etc/
+#ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
 pass_secret=$(pwgen -s 96)
-sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /opt/graylog2-server/graylog2.conf
-sed -i -e 's|root_password_sha2 =|root_password_sha2 = ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f|' /opt/graylog2-server/graylog2.conf
-sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /opt/graylog2-server/graylog2.conf
-sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
+sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /etc/graylog2.conf
+#root_pass_sha2=$(echo -n password123 | shasum -a 256)
+sed -i -e "s|root_password_sha2 =|root_password_sha2 = ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f|" /etc/graylog2.conf
+sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /etc/graylog2.conf
+sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /etc/graylog2.conf
+sed -i -e 's|#elasticsearch_discovery_zen_ping_multicast_enabled = false|elasticsearch_discovery_zen_ping_multicast_enabled = false|' /etc/graylog2.conf
+sed -i -e 's|#elasticsearch_discovery_zen_ping_unicast_hosts = 192.168.1.203:9300|elasticsearch_discovery_zen_ping_unicast_hosts = 127.0.0.1:9300|' /etc/graylog2.conf
 /opt/graylog2-server/bin/graylog2ctl start
 
 # Install graylog2 web interface
@@ -107,7 +114,7 @@ nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
 chown -R root:root /opt/graylog2*
-chown -R www-data:www-data /opt/graylog2-web-interface*
+#chown -R www-data:www-data /opt/graylog2-web-interface*
 
 # Cleaning up /opt
 echo "Cleaning up"
@@ -126,6 +133,8 @@ echo "Installation has completed!!"
 echo "Browse to IP address of this Graylog2 Server Used for Installation"
 echo "IP Address detected from system is $IPADDY"
 echo "Browse to http://$IPADDY:9000"
+echo "Login with username: admin"
+echo "Login with password: password123"
 echo "You Entered $SERVERNAME During Install"
 echo "Browse to http://$SERVERNAME:9000 If Different"
 echo "EveryThingShouldBeVirtual.com"
