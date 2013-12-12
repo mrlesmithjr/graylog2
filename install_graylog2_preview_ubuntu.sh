@@ -101,7 +101,7 @@ sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
 echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
 echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+# echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 sed -i -e 's|graylog2-server.uris=""|graylog2-server.uris="http://127.0.0.1:12900/"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 app_secret=$(pwgen -s 96)
