@@ -86,6 +86,8 @@ sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /etc/graylog2.c
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /etc/graylog2.conf
 sed -i -e 's|#elasticsearch_discovery_zen_ping_multicast_enabled = false|elasticsearch_discovery_zen_ping_multicast_enabled = false|' /etc/graylog2.conf
 sed -i -e 's|#elasticsearch_discovery_zen_ping_unicast_hosts = 192.168.1.203:9300|elasticsearch_discovery_zen_ping_unicast_hosts = 127.0.0.1:9300|' /etc/graylog2.conf
+# Setting new retention policy setting or Graylog2 Server will not start
+sed -i 's|retention_strategy = delete|retention_strategy = close|' /etc/graylog2.conf
 
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
