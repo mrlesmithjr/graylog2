@@ -214,7 +214,7 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 # Install Apache-passenger
 echo Installing Apache-Passenger Modules
 gem install passenger
-/var/lib/gems/1.9.1/gems/passenger-4.0.20/bin/passenger-install-apache2-module --auto
+/var/lib/gems/1.9.1/gems/passenger-4.0.30/bin/passenger-install-apache2-module --auto
 
 # Add passenger modules for Apache2
 echo "Adding Apache Passenger modules to /etc/apache2/httpd.conf"
