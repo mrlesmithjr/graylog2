@@ -1,10 +1,4 @@
-echo "deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen" | sudo tee /etc/apt/sources.list.d/10gen.list
-sudo apt-get -qq update
-sudo apt-get -y install mongodb-10gen
-
-
-
-#! /bin/bash
+#!/bin/bash
 #Provided by @mrlesmithjr
 #EveryThingShouldBeVirtual.com
 #
