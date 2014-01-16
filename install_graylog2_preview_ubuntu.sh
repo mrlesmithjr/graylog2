@@ -38,13 +38,17 @@ apt-get -y install git curl build-essential openjdk-7-jre pwgen
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.deb
+#wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.deb
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.10.deb
+
 #wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.6/graylog2-server-0.20.0-preview.6.tgz
 #wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.6/graylog2-web-interface-0.20.0-preview.6.tgz
 #wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.7/graylog2-server-0.20.0-preview.7.tgz
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.8/graylog2-server-0.20.0-preview.8.tgz
+#wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.8/graylog2-server-0.20.0-preview.8.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-rc.1/graylog2-server-0.20.0-rc.1.tgz
 #wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.7/graylog2-web-interface-0.20.0-preview.7.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.8/graylog2-web-interface-0.20.0-preview.8.tgz
+#wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.8/graylog2-web-interface-0.20.0-preview.8.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-rc.1/graylog2-web-interface-0.20.0-rc.1.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -59,7 +63,8 @@ ln -s graylog2-server-0.2*/ graylog2-server
 
 # Install elasticsearch
 echo "Installing elasticsearch"
-dpkg -i elasticsearch-0.90.7.deb
+#dpkg -i elasticsearch-0.90.7.deb
+dpkg -i elasticsearch-0.90.10.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Test elasticsearch
@@ -111,8 +116,6 @@ sed -i -e 's|graylog2-server.uris=""|graylog2-server.uris="http://127.0.0.1:1290
 app_secret=$(pwgen -s 96)
 sed -i -e 's|application.secret=""|application.secret="'$app_secret'"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 
-
-
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
 chown -R root:root /opt/graylog2*
@@ -122,7 +125,8 @@ chown -R root:root /opt/graylog2*
 echo "Cleaning up"
 rm /opt/graylog2-server*.*gz
 rm /opt/graylog2-web-interface*.*gz
-rm /opt/elasticsearch-0.90.7.deb
+#rm /opt/elasticsearch-0.90.7.deb
+rm /opt/elasticsearch-0.90.10.deb
 
 # Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
