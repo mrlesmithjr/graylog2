@@ -94,24 +94,135 @@ sed -i -e 's|#elasticsearch_discovery_zen_ping_unicast_hosts = 192.168.1.203:930
 # Setting new retention policy setting or Graylog2 Server will not start
 sed -i 's|retention_strategy = delete|retention_strategy = close|' /etc/graylog2.conf
 
+# Create graylog2-server startup script
+echo "Creating /etc/init.d/graylog2-server startup script"
+(
+cat <<'EOF'
+#!/bin/sh
+#
+# graylog2-server: graylog2 message collector
+#
+# chkconfig: - 98 02
+# description: This daemon listens for syslog and GELF messages and stores them in mongodb
+#
+CMD=$1
+NOHUP=`which nohup`
+JAVA_CMD=/usr/bin/java
+GRAYLOG2_SERVER_HOME=/opt/graylog2-server
+start() {
+ echo "Starting graylog2-server ..."
+$NOHUP $JAVA_CMD -jar $GRAYLOG2_SERVER_HOME/graylog2-server.jar > /var/log/graylog2.log 2>&1 &
+}
+
+stop() {
+PID=`cat /tmp/graylog2.pid`
+echo "Stopping graylog2-server ($PID) ..."
+kill $PID
+}
+
+restart() {
+echo "Restarting graylog2-server ..."
+stop
+start
+}
+
+case "$CMD" in
+start)
+start
+;;
+stop)
+stop
+;;
+restart)
+restart
+;;
+*)
+echo "Usage $0 {start|stop|restart}"
+RETVAL=1
+esac
+EOF
+) | tee /etc/init.d/graylog2-server
+
+# Make graylog2-server executable
+chmod +x /etc/init.d/graylog2-server
+
+# Start graylog2-server on bootup
+echo "Making graylog2-server startup on boot"
+update-rc.d graylog2-server defaults
+
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
 cd /opt/
 ln -s graylog2-web-interface-0.2*/ graylog2-web-interface
 
+echo "Creating Graylog2-web-interface startup script"
+(
+cat <<'EOF'
+#!/bin/sh
+#
+# graylog2-web-interface: graylog2 web frontend
+#
+# chkconfig: - 98 02
+# description: This daemon listens for syslog and GELF messages and stores them in mongodb
+#
+CMD=$1
+NOHUP=`which nohup`
+JAVA_CMD=/usr/bin/java
+GRAYLOG2_WEB_INTERFACE_HOME=/opt/graylog2-web-interface
+start() {
+ echo "Starting graylog2-server ..."
+$NOHUP /opt/graylog2-web-interface/bin/graylog2-web-interface &
+}
+
+stop() {
+PID=`cat /tmp/graylog2-web-interface.pid`
+echo "Stopping graylog2-web-interface ($PID) ..."
+kill $PID
+}
+
+restart() {
+echo "Restarting graylog2-web-interface ..."
+stop
+start
+}
+
+case "$CMD" in
+start)
+start
+;;
+stop)
+stop
+;;
+restart)
+restart
+;;
+*)
+echo "Usage $0 {start|stop|restart}"
+RETVAL=1
+esac
+EOF
+) | tee /etc/init.d/graylog2-web-interface
+
+# Make graylog2-web-interface executable
+chmod +x /etc/init.d/graylog2-web-interface
+
+# Start graylog2-web-interface on bootup
+echo "Making graylog2-web-interface startup on boot"
+update-rc.d graylog2-web-interface defaults
+
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf and rsyslog.conf"
 #sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
-sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
-sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
-sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
-sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
-sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
-sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
-echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
-echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+#sed -i -e 's|#$ModLoad immark|$ModLoad immark|' /etc/rsyslog.conf
+#sed -i -e 's|#$ModLoad imudp|$ModLoad imudp|' /etc/rsyslog.conf
+#sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
+#sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
+#sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
+#sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
+#echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
+#echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 # echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
-echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
+#echo '*.info @localhost:10514' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 sed -i -e 's|graylog2-server.uris=""|graylog2-server.uris="http://127.0.0.1:12900/"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
 app_secret=$(pwgen -s 96)
 sed -i -e 's|application.secret=""|application.secret="'$app_secret'"|' /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
@@ -133,14 +244,8 @@ echo "Restarting All Services Required for Graylog2 to work"
 service elasticsearch restart
 service mongodb restart
 service rsyslog restart
-
-# Starting Graylog2 Server
-/opt/graylog2-server/bin/graylog2ctl start
-
-# Starting Graylog2 Web Interface
-echo "Waiting 2 Minutes for Graylog2 Server to start before starting web interface"
-sleep 2m
-nohup /opt/graylog2-web-interface/bin/graylog2-web-interface &
+service graylog2-server restart
+service graylog2-web-interface restart
 
 # All Done
 echo "Installation has completed!!"
