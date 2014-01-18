@@ -150,6 +150,9 @@ chmod +x /etc/init.d/graylog2-server
 echo "Making graylog2-server startup on boot"
 update-rc.d graylog2-server defaults
 
+echo "Starting graylog2-server"
+service graylog2-server start
+
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
 cd /opt/
@@ -210,6 +213,9 @@ chmod +x /etc/init.d/graylog2-web-interface
 echo "Making graylog2-web-interface startup on boot"
 update-rc.d graylog2-web-interface defaults
 
+echo "Starting graylog2-web-interface"
+service graylog2-web-interface start
+
 # Now we need to modify some things to get rsyslog to forward to graylog. this is useful for ESXi syslog format to be correct.
 echo "Updating graylog2.conf and rsyslog.conf"
 #sed -i -e 's|syslog_listen_port = 514|syslog_listen_port = 10514|' /etc/graylog2.conf
@@ -244,8 +250,6 @@ echo "Restarting All Services Required for Graylog2 to work"
 service elasticsearch restart
 service mongodb restart
 service rsyslog restart
-service graylog2-server restart
-service graylog2-web-interface restart
 
 # All Done
 echo "Installation has completed!!"
