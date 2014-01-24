@@ -61,9 +61,9 @@ echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to 
 cd /opt
 #wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
 # wget https://github.com/Graylog2/graylog2-server/releases/download/0.12.0/graylog2-server-0.12.0.tar.gz
-wget https://github.com/Graylog2/graylog2-server/archive/0.20.0-rc.1-1.tar.gz && mv 0.20.0-rc.1-1 graylog2-server
+wget https://github.com/Graylog2/graylog2-server/archive/0.20.0-rc.1-1.tar.gz && mv 0.20.0-rc.1-1.tar.gz graylog2-server.tar.gz
 # wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.12.0/graylog2-web-interface-0.12.0.tar.gz
-wget https://github.com/Graylog2/graylog2-web-interface/archive/0.20.0-rc.1-1.tar.gz && mv 0.20.0-rc.1-1 graylog2-web-interface
+wget https://github.com/Graylog2/graylog2-web-interface/archive/0.20.0-rc.1-1.tar.gz && mv 0.20.0-rc.1-1.tar.gz graylog2-web-interface.tar.gz
 
 # Extract files
 echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
