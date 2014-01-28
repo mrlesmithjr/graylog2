@@ -232,12 +232,12 @@ Options -MultiViews
 ErrorLog /var/log/apache2/error.log
 LogLevel warn
 CustomLog /var/log/apache2/access.log combined
-</VirtualHost>" | tee /etc/apache2/sites-available/graylog2
+</VirtualHost>" | tee /etc/apache2/sites-available/graylog2.conf
 
 # Enable virtualhost
 echo "Enabling Apache VirtualHost Settings"
 a2dissite 000-default
-a2ensite graylog2
+a2ensite graylog2.conf
 service apache2 reload
 
 # Restart apache

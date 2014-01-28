@@ -22,16 +22,16 @@ exec > >(tee "./graylog2/install_graylog2.log")
 # Apache Settings
 # change x.x.x.x to whatever your ip address is of the server you are installing on or let the script auto detect your IP
 # which is the default
-# SERVERNAME="x.x.x.x"
-# SERVERALIAS="x.x.x.x"
+ SERVERNAME="127.0.0.1"
+ SERVERALIAS="localhost"
 #
 #
-echo "Detecting IP Address"
-IPADDY="$(sudo ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
-echo "Detected IP Address is $IPADDY"
+# echo "Detecting IP Address"
+# IPADDY="$(sudo ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+# echo "Detected IP Address is $IPADDY"
 
-SERVERNAME=$IPADDY
-SERVERALIAS=$IPADDY
+# SERVERNAME=$IPADDY
+# SERVERALIAS=$IPADDY
 
 # Disable CD Sources in /etc/apt/sources.list
 echo "Disabling CD Sources and Updating Apt Packages and Installing Pre-Reqs"
@@ -60,8 +60,10 @@ apt-get -y install --force-yes openjdk-7-jre-headless
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
 #wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.12.0/graylog2-server-0.12.0.tar.gz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.12.0/graylog2-web-interface-0.12.0.tar.gz
+# wget https://github.com/Graylog2/graylog2-server/releases/download/0.12.0/graylog2-server-0.12.0.tar.gz
+wget https://github.com/Graylog2/graylog2-server/archive/0.20.0-rc.1-1.tar.gz && mv 0.20.0-rc.1-1.tar.gz graylog2-server.tar.gz
+# wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.12.0/graylog2-web-interface-0.12.0.tar.gz
+wget https://github.com/Graylog2/graylog2-web-interface/archive/0.20.0-rc.1-1.tar.gz && mv 0.20.0-rc.1-1.tar.gz graylog2-web-interface.tar.gz
 
 # Extract files
 echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
