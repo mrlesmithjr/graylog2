@@ -45,10 +45,12 @@ wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearc
 #wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.6/graylog2-web-interface-0.20.0-preview.6.tgz
 #wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.7/graylog2-server-0.20.0-preview.7.tgz
 #wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-preview.8/graylog2-server-0.20.0-preview.8.tgz
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-rc.1/graylog2-server-0.20.0-rc.1.tgz
+#wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-rc.1/graylog2-server-0.20.0-rc.1.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0-rc.1-1/graylog2-server-0.20.0-rc.1-1.tgz
 #wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.7/graylog2-web-interface-0.20.0-preview.7.tgz
 #wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-preview.8/graylog2-web-interface-0.20.0-preview.8.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-rc.1/graylog2-web-interface-0.20.0-rc.1.tgz
+#wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-rc.1/graylog2-web-interface-0.20.0-rc.1.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0-rc.1-1/graylog2-web-interface-0.20.0-rc.1-1.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
