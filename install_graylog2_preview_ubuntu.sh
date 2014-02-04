@@ -113,6 +113,8 @@ JAVA_CMD=/usr/bin/java
 GRAYLOG2_SERVER_HOME=/opt/graylog2-server
 start() {
  echo "Starting graylog2-server ..."
+if [ -f /tmp/graylog2.pid] ; then rm /tmp/graylog2.pid
+fi
 sleep 60
 $NOHUP $JAVA_CMD -jar $GRAYLOG2_SERVER_HOME/graylog2-server.jar > /var/log/graylog2.log 2>&1 &
 }
