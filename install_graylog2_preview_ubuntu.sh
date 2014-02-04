@@ -179,7 +179,7 @@ NOHUP=`which nohup`
 JAVA_CMD=/usr/bin/java
 GRAYLOG2_WEB_INTERFACE_HOME=/opt/graylog2-web-interface
 start() {
- echo "Starting graylog2-server ..."
+ echo "Starting graylog2-web-interface ..."
 sleep 2m
 $NOHUP /opt/graylog2-web-interface/bin/graylog2-web-interface &
 }
