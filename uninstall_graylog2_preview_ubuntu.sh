@@ -6,8 +6,8 @@
 # set -e
 # Setup logging
 # Logs stderr and stdout to separate files.
-exec 2> >(tee "./graylog2/uninstall_graylog2.err")
-exec > >(tee "./graylog2/uninstall_graylog2.log")
+#exec 2> >(tee "./graylog2/uninstall_graylog2.err")
+#exec > >(tee "./graylog2/uninstall_graylog2.log")
 #
 service rsyslog stop
 service mongodb stop
