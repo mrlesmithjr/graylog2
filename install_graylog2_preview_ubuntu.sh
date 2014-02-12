@@ -101,50 +101,77 @@ sed -i 's|retention_strategy = delete|retention_strategy = close|' /etc/graylog2
 echo "Creating /etc/init.d/graylog2-server startup script"
 (
 cat <<'EOF'
-#!/bin/sh
-#
-# graylog2-server: graylog2 message collector
-#
-# chkconfig: - 98 02
-# description: This daemon listens for syslog and GELF messages and stores them in mongodb
-#
+#!/bin/bash
+
 CMD=$1
 NOHUP=`which nohup`
-JAVA_CMD=/usr/bin/java
-GRAYLOG2_SERVER_HOME=/opt/graylog2-server
+
+GRAYLOG2CTL_DIR="/opt/graylog2-server/bin"
+GRAYLOG2_SERVER_JAR=graylog2-server.jar
+GRAYLOG2_CONF=/etc/graylog2.conf
+GRAYLOG2_PID=/tmp/graylog2.pid
+LOG_FILE=log/graylog2-server.log
+
 start() {
- echo "Starting graylog2-server ..."
-if [ -f /tmp/graylog2.pid] ; then rm /tmp/graylog2.pid
-fi
-sleep 60
-$NOHUP $JAVA_CMD -jar $GRAYLOG2_SERVER_HOME/graylog2-server.jar > /var/log/graylog2.log 2>&1 &
+    echo "Starting graylog2-server ..."
+    cd "$GRAYLOG2CTL_DIR/.."
+    sleep 2m
+    $NOHUP java -jar ${GRAYLOG2_SERVER_JAR} -f ${GRAYLOG2_CONF} -p ${GRAYLOG2_PID} >> ${LOG_FILE} &
 }
 
 stop() {
-PID=`cat /tmp/graylog2.pid`
-echo "Stopping graylog2-server ($PID) ..."
-kill $PID
+    PID=`cat ${GRAYLOG2_PID}`
+    echo "Stopping graylog2-server ($PID) ..."
+    if kill $PID; then
+        rm ${GRAYLOG2_PID}
+    fi
 }
 
 restart() {
-echo "Restarting graylog2-server ..."
-stop
-start
+    echo "Restarting graylog2-server ..."
+    stop
+    start
+}
+
+status() {
+    pid=$(get_pid)
+    if [ ! -z $pid ]; then
+        if pid_running $pid; then
+            echo "graylog2-server running as pid $pid"
+            return 0
+        else
+            echo "Stale pid file with $pid - removing..."
+            rm ${GRAYLOG2_PID}
+        fi
+    fi
+
+    echo "graylog2-server not running"
+}
+
+get_pid() {
+    cat ${GRAYLOG2_PID} 2> /dev/null
+}
+
+pid_running() {
+    kill -0 $1 2> /dev/null
 }
 
 case "$CMD" in
-start)
-start
-;;
-stop)
-stop
-;;
-restart)
-restart
-;;
-*)
-echo "Usage $0 {start|stop|restart}"
-RETVAL=1
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+    status)
+        status
+        ;;
+    *)
+        echo "Usage $0 {start|stop|restart|status}"
+        RETVAL=1
 esac
 EOF
 ) | tee /etc/init.d/graylog2-server
