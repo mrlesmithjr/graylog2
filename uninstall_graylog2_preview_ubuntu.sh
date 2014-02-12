@@ -13,7 +13,7 @@ service rsyslog stop
 service mongodb stop
 service elasticsearch stop
 service graylog2-web-interface stop
-update-rc.d graylog2-web-interface remove
+update-rc.d graylog2-web-interface remove
 rm /etc/init.d/graylog2-web-interface
 service graylog2-server stop
 update-rc.d graylog2-server remove
