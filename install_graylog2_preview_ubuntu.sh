@@ -205,16 +205,21 @@ CMD=$1
 NOHUP=`which nohup`
 JAVA_CMD=/usr/bin/java
 GRAYLOG2_WEB_INTERFACE_HOME=/opt/graylog2-web-interface
+
+GRAYLOG2_WEB_INTERFACE_PID=/opt/graylog2-web-interface/RUNNING_PID
+
 start() {
- echo "Starting graylog2-web-interface ..."
-sleep 2m
+echo "Starting graylog2-web-interface ..."
+#sleep 3m
 $NOHUP /opt/graylog2-web-interface/bin/graylog2-web-interface &
 }
 
 stop() {
-PID=`cat /tmp/graylog2-web-interface.pid`
 echo "Stopping graylog2-web-interface ($PID) ..."
-kill $PID
+PID=`cat ${GRAYLOG2_WEB_INTERFACE_PID}`
+if kill $PID; then
+        rm ${GRAYLOG2_WEB_INTERFACE_PID}
+fi
 }
 
 restart() {
@@ -223,18 +228,44 @@ stop
 start
 }
 
+status() {
+    pid=$(get_pid)
+    if [ ! -z $pid ]; then
+        if pid_running $pid; then
+            echo "graylog2-web-interface running as pid $pid"
+            return 0
+        else
+            echo "Stale pid file with $pid - removing..."
+            rm ${GRAYLOG2_WEB_INTERFACE_PID}
+        fi
+    fi
+
+    echo "graylog2-web-interface not running"
+}
+
+get_pid() {
+    cat ${GRAYLOG2_WEB_INTERFACE_PID} 2> /dev/null
+}
+
+pid_running() {
+    kill -0 $1 2> /dev/null
+}
+
 case "$CMD" in
-start)
-start
-;;
-stop)
-stop
-;;
-restart)
-restart
-;;
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                restart
+                ;;
+        status)
+                status
+                ;;
 *)
-echo "Usage $0 {start|stop|restart}"
+echo "Usage $0 {start|stop|restart|status}"
 RETVAL=1
 esac
 EOF
