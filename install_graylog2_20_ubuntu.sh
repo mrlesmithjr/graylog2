@@ -57,6 +57,7 @@ ln -s graylog2-server-0.2*/ graylog2-server
 echo "Installing elasticsearch"
 dpkg -i elasticsearch-0.90.10.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
+service elasticsearch restart
 
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
@@ -299,7 +300,7 @@ rm /opt/elasticsearch-0.90.10.deb
 
 # Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
-service elasticsearch restart
+# service elasticsearch restart
 service mongodb restart
 service rsyslog restart
 
