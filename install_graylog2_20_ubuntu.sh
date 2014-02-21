@@ -57,7 +57,6 @@ ln -s graylog2-server-0.2*/ graylog2-server
 echo "Installing elasticsearch"
 dpkg -i elasticsearch-0.90.10.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
-service elasticsearch restart
 
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
@@ -68,6 +67,9 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee /etc/apt/sources.list.d/10gen.list
 apt-get -qq update
 apt-get -y install mongodb-10gen
+
+# Restart elasticsearch
+service elasticsearch restart
 
 # Install graylog2-server
 echo "Installing graylog2-server"
