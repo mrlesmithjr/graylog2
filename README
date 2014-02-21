@@ -3,24 +3,26 @@ This installation script will perform an automated install of Graylog2 on Ubuntu
 contact me on the twitters @mrlesmithjr
 visit my website at EveryThingShouldBeVirtual.com
 
+Update 02/21/2014 - Graylog2 v0.12.0 no longer maintained - v0.20.0 is the going forward version (The script to use now is for version v0.20.)
+
 Installation steps
 ------------------
 sudo apt-get -y install git
 cd ~
 git clone https://github.com/mrlesmithjr/graylog2/
-chmod +x ./graylog2/install_graylog2_ubuntu.sh
+chmod +x ./graylog2/install_graylog2_20_ubuntu.sh
 
 To change your ip address of the server you are installing on you will need to edit the script or let the script auto detect your IP for you. The default is auto detect. If you use the default of auto detect skip editing the file and continue on.
 Edit the file
 
-nano ./graylog2/install_graylog2_ubuntu.sh
+nano ./graylog2/install_graylog2_20_ubuntu.sh
 
 Save the file with ctrl^x.
 
 Now enter the following to start running the script.
 
 cd ~
-sudo ./graylog2/install_graylog2_ubuntu.sh
+sudo ./graylog2/install_graylog2_20_ubuntu.sh
 
 Within the github repository there is also a script to automate a Debian 6.0 Graylog2 installation. If you are installing on Debian 6.0 run the following instead.
 
