@@ -94,6 +94,16 @@ echo "Creating /etc/init.d/graylog2-server startup script"
 cat <<'EOF'
 #!/bin/bash
 
+### BEGIN INIT INFO
+# Provides:          graylog2-server
+# Required-Start:    $elasticsearch
+# Required-Stop:     $graylog2-web-interface
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start graylog2-server at boot time
+# Description:       Starts graylog2-server using start-stop-daemon
+### END INIT INFO
+
 CMD=$1
 NOHUP=`which nohup`
 
@@ -106,7 +116,7 @@ LOG_FILE=log/graylog2-server.log
 start() {
     echo "Starting graylog2-server ..."
     cd "$GRAYLOG2CTL_DIR/.."
-    sleep 2m
+#    sleep 2m
     $NOHUP java -jar ${GRAYLOG2_SERVER_JAR} -f ${GRAYLOG2_CONF} -p ${GRAYLOG2_PID} >> ${LOG_FILE} &
 }
 
@@ -186,12 +196,17 @@ echo "Creating Graylog2-web-interface startup script"
 (
 cat <<'EOF'
 #!/bin/sh
-#
-# graylog2-web-interface: graylog2 web frontend
-#
-# chkconfig: - 98 02
-# description: This daemon listens for syslog and GELF messages and stores them in mongodb
-#
+
+### BEGIN INIT INFO
+# Provides:          graylog2-web-interface
+# Required-Start:    $graylog2-server
+# Required-Stop:     $graylog2-server
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start graylog2-server at boot time
+# Description:       Starts graylog2-server using start-stop-daemon
+### END INIT INFO
+
 CMD=$1
 NOHUP=`which nohup`
 JAVA_CMD=/usr/bin/java
