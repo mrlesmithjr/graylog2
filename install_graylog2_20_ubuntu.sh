@@ -322,7 +322,7 @@ rm /opt/elasticsearch-0.90.10.deb
 # Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
 # service elasticsearch restart
-service mongodb restart
+# service mongodb restart
 service rsyslog restart
 
 echo "Starting graylog2-web-interface"
