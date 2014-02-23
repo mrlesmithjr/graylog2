@@ -1,22 +1,22 @@
-# ! /bin/bash
+#!/bin/bash
 # Provided by @mrlesmithjr
 # EveryThingShouldBeVirtual.com
 #
 # Ubuntu Graylog2 Preview/RC Uninstall Script
-# set -e
+set -e
 # Setup logging
 # Logs stderr and stdout to separate files.
-#exec 2> >(tee "./graylog2/uninstall_graylog2.err")
-#exec > >(tee "./graylog2/uninstall_graylog2.log")
+exec 2> >(tee "./graylog2/uninstall_graylog2.err")
+exec > >(tee "./graylog2/uninstall_graylog2.log")
 #
 service rsyslog stop
 service mongodb stop
 service elasticsearch stop
 service graylog2-web-interface stop
-update-rc.d graylog2-web-interface remove
+update-rc.d graylog2-web-interface remove -f
 rm /etc/init.d/graylog2-web-interface
 service graylog2-server stop
-update-rc.d graylog2-server remove
+update-rc.d graylog2-server remove -f
 rm /etc/init.d/graylog2-server
 rm /etc/graylog2.conf
 apt-get -y remove mongodb-10gen
