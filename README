@@ -24,12 +24,34 @@ Now enter the following to start running the script.
 cd ~
 sudo ./graylog2/install_graylog2_20_ubuntu.sh
 
+Uninstall steps for Preview/RC/Final v0.20.0 releases
+-----------------------------------------------------
+cd ~
+mv graylog2 graylog2.old
+git clone https://github.com/mrlesmithjr/graylog2/
+chmod +x ./graylog2/uninstall_graylog2_preview_ubuntu.sh
+sudo ./graylog2/uninstall_graylog2_preview_ubuntu.sh
+
+Upgrade steps from Preview/RC to Final v0.20.0 releases (***Use with caution as of now***)
+-------------------------------------------------------
+cd ~
+mv graylog2 graylog2.old
+git clone https://github.com/mrlesmithjr/graylog2/
+chmod +x ./graylog2/upgrade_to_graylog2_20_ubuntu.sh
+sudo ./graylog2/upgrade_to_graylog2_20_ubuntu.sh
+
+
+Debian 6.0
+----------
 Within the github repository there is also a script to automate a Debian 6.0 Graylog2 installation. If you are installing on Debian 6.0 run the following instead.
 
 chmod +x ./graylog2/install_graylog2_debian.sh
 cd ~
 ./graylog2/install_graylog2_debian.sh
 
+
+CentOS
+------
 There is also a CentOS script for installing Graylog2. Thanks to boardstretcher for the help on this. https://github.com/boardstretcher
 
 chmod +x ./graylog2/install_graylog2_centos.sh
