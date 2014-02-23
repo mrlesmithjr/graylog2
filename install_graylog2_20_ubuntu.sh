@@ -68,6 +68,13 @@ echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | 
 apt-get -qq update
 apt-get -y install mongodb-10gen
 
+# Making changes to /etc/security/limits.conf to allow more open files for elasticsearch
+mv /etc/security/limits.conf /etc/security/limits.bak
+grep -Ev "# End of file" /etc/security/limits.bak > /etc/security/limits.conf
+echo "elasticsearch soft nofile 32000" >> /etc/security/limits.conf
+echo "elasticsearch hard nofile 32000" >> /etc/security/limits.conf
+echo "# End of file" >> /etc/security/limits.conf
+
 # Restart elasticsearch
 service elasticsearch restart
 
