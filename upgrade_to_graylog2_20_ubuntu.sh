@@ -10,11 +10,11 @@ exec 2> >(tee "./graylog2/upgrade_graylog2.err")
 exec > >(tee "./graylog2/upgrade_graylog2.log")
 
 service graylog2-web-interface stop
-update-rc.d graylog2-web-interface remove -f
 rm /etc/init.d/graylog2-web-interface
+update-rc.d graylog2-web-interface remove -f
 service graylog2-server stop
-update-rc.d graylog2-server remove -f
 rm /etc/init.d/graylog2-server
+update-rc.d graylog2-server remove -f
 rm /etc/graylog2.conf
 rm -rf /opt/graylog2-*
 # rm /etc/graylog2-server-node-id
