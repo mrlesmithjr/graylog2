@@ -13,11 +13,11 @@ service rsyslog stop
 service mongodb stop
 service elasticsearch stop
 service graylog2-web-interface stop
-update-rc.d graylog2-web-interface remove -f
 rm /etc/init.d/graylog2-web-interface
+update-rc.d graylog2-web-interface remove
 service graylog2-server stop
-update-rc.d graylog2-server remove -f
 rm /etc/init.d/graylog2-server
+update-rc.d graylog2-server remove
 rm /etc/graylog2.conf
 apt-get -y remove mongodb-10gen
 apt-get -y purge mongodb-10gen
