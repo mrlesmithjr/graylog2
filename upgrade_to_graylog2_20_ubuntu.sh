@@ -278,7 +278,7 @@ echo "Fixing Graylog2 Web Interface Permissions"
 chown -R root:root /opt/graylog2*
 # chown -R www-data:www-data /opt/graylog2-web-interface*
 
-Cleaning up /opt
+# Cleaning up /opt
 echo "Cleaning up"
 rm /opt/graylog2-server*.*gz
 rm /opt/graylog2-web-interface*.*gz
