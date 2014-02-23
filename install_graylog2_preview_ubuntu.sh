@@ -71,6 +71,8 @@ echo "Installing elasticsearch"
 #dpkg -i elasticsearch-0.90.7.deb
 dpkg -i elasticsearch-0.90.11.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
+sed -i -e 's|# discovery\.zen\.ping\.multicast\.enabled: false|discovery\.zen\.ping\.multicast\.enabled: false|' /etc/elasticsearch/elasticsearch.yml
+sed -i -e 's|# discovery\.zen\.ping\.unicast\.hosts: \[[^]]\+\]|discovery\.zen\.ping\.unicast\.hosts: \["192.168.1.203:9300"\]|' /etc/elasticsearch/elasticsearch.yml
 
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
