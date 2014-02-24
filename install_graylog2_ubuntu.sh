@@ -54,13 +54,14 @@ apt-get -y install git curl apache2 libcurl4-openssl-dev apache2-prefork-dev lib
 echo "Downloading Elasticsearch"
 # chown -R $USER:$USER /opt
 cd /opt
-git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
+# git clone https://github.com/elasticsearch/elasticsearch-servicewrapper.git
 
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
-echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
+echo "Downloading Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
+# wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.tar.gz
 wget https://github.com/Graylog2/graylog2-server/releases/download/0.12.0/graylog2-server-0.12.0.tar.gz
 wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.12.0/graylog2-web-interface-0.12.0.tar.gz
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.6.deb
 
 # Extract files
 echo "Extracting Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -71,17 +72,18 @@ done
 
 # Create Symbolic Links
 echo "Creating SymLinks for elasticsearch and graylog2-server"
-ln -s elasticsearch-0.20.6/ elasticsearch
+# ln -s elasticsearch-0.20.6/ elasticsearch
 ln -s graylog2-server-0.12.0/ graylog2-server
 
 # Install elasticsearch
 echo "Installing elasticsearch"
-mv *servicewrapper*/service elasticsearch/bin/
-rm -Rf *servicewrapper*
-/opt/elasticsearch/bin/service/elasticsearch install
-ln -s `readlink -f elasticsearch/bin/service/elasticsearch` /usr/bin/elasticsearch_ctl
+# mv *servicewrapper*/service elasticsearch/bin/
+# rm -Rf *servicewrapper*
+# /opt/elasticsearch/bin/service/elasticsearch install
+# ln -s `readlink -f elasticsearch/bin/service/elasticsearch` /usr/bin/elasticsearch_ctl
+dpkg -i elasticsearch-0.20.6.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /opt/elasticsearch/config/elasticsearch.yml
-/etc/init.d/elasticsearch start
+service elasticsearch restart
 
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
@@ -96,7 +98,7 @@ apt-get -y install mongodb-10gen
 # Install graylog2-server
 echo "Installing graylog2-server"
 cd graylog2-server-0.12.0/
-cp /opt/graylog2-server/elasticsearch.yml{.example,}
+# cp /opt/graylog2-server/elasticsearch.yml{.example,}
 ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
 cp /opt/graylog2-server/graylog2.conf{.example,}
 ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
@@ -254,7 +256,7 @@ sed -i -e 's|#$UDPServerRun 514|$UDPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|#$ModLoad imtcp|$ModLoad imtcp|' /etc/rsyslog.conf
 sed -i -e 's|#$InputTCPServerRun 514|$InputTCPServerRun 514|' /etc/rsyslog.conf
 sed -i -e 's|*.*;auth,authpriv.none|#*.*;auth,authpriv.none|' /etc/rsyslog.d/50-default.conf
-echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %FROMHOST% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
+echo '$template GRAYLOG2,"<%PRI%>1 %timegenerated:::date-rfc3339% %hostname% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"' | tee /etc/rsyslog.d/32-graylog2.conf
 echo '$ActionForwardDefaultTemplate GRAYLOG2' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 echo '$PreserveFQDN on' | tee -a  /etc/rsyslog.d/32-graylog2.conf
 # Log syslog levels info and above
@@ -265,13 +267,13 @@ sed -i -e "s|Graylog2WebInterface::Application.config.secret_token = 'CHANGE ME'
 
 # Fixing /opt/graylog2-web-interface Permissions
 echo "Fixing Graylog2 Web Interface Permissions"
-chown -R root:root /opt/elasticsearch*
+# chown -R root:root /opt/elasticsearch*
 chown -R root:root /opt/graylog2*
 chown -R www-data:www-data /opt/graylog2-web-interface*
 
 # Cleaning up /opt
 echo "Cleaning up"
-rm /opt/elasticsearch*.tar.gz
+# rm /opt/elasticsearch*.tar.gz
 rm /opt/graylog2-server*.tar.gz
 rm /opt/graylog2-web-interface*.tar.gz
 
