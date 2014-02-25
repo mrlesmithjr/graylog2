@@ -32,7 +32,7 @@ git clone https://github.com/mrlesmithjr/graylog2/
 chmod +x ./graylog2/uninstall_graylog2_preview_ubuntu.sh
 sudo ./graylog2/uninstall_graylog2_preview_ubuntu.sh
 
-Upgrade steps from Preview/RC to Final v0.20.0 releases (***Use with caution as of now***)
+Upgrade steps from Preview/RC to Final v0.20.0 releases (***Use with caution as of now***) **Not for v0.12.0 to v0.20.x versions!!!
 -------------------------------------------------------
 cd ~
 mv graylog2 graylog2.old
