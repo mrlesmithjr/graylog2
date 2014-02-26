@@ -82,7 +82,7 @@ echo "Installing elasticsearch"
 # /opt/elasticsearch/bin/service/elasticsearch install
 # ln -s `readlink -f elasticsearch/bin/service/elasticsearch` /usr/bin/elasticsearch_ctl
 dpkg -i elasticsearch-0.20.6.deb
-sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /opt/elasticsearch/config/elasticsearch.yml
+sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
 
 # Test elasticsearch
