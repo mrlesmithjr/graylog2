@@ -98,7 +98,7 @@ apt-get -y install mongodb-10gen
 # Install graylog2-server
 echo "Installing graylog2-server"
 cd graylog2-server-0.12.0/
-# cp /opt/graylog2-server/elasticsearch.yml{.example,}
+cp /opt/graylog2-server/elasticsearch.yml{.example,}
 ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
 cp /opt/graylog2-server/graylog2.conf{.example,}
 ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
