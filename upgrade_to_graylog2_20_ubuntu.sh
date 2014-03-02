@@ -15,7 +15,7 @@ update-rc.d graylog2-web-interface remove
 service graylog2-server stop
 rm /etc/init.d/graylog2-server
 update-rc.d graylog2-server remove
-rm /etc/graylog2.conf
+mv /etc/graylog2.conf /etc/graylog2.bak
 rm -rf /opt/graylog2-*
 # rm /etc/graylog2-server-node-id
 
@@ -29,8 +29,8 @@ SERVERALIAS=$IPADDY
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.0/graylog2-server-0.20.1.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.0/graylog2-web-interface-0.20.1.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.1/graylog2-server-0.20.1.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.1/graylog2-web-interface-0.20.1.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -89,7 +89,7 @@ NOHUP=`which nohup`
 GRAYLOG2CTL_DIR="/opt/graylog2-server/bin"
 GRAYLOG2_SERVER_JAR=graylog2-server.jar
 GRAYLOG2_CONF=/etc/graylog2.conf
-GRAYLOG2_PID=/tmp/graylog2.pid
+GRAYLOG2_PID=/var/run/graylog2-server.pid
 LOG_FILE=log/graylog2-server.log
 
 start() {
@@ -191,7 +191,7 @@ NOHUP=`which nohup`
 JAVA_CMD=/usr/bin/java
 GRAYLOG2_WEB_INTERFACE_HOME=/opt/graylog2-web-interface
 
-GRAYLOG2_WEB_INTERFACE_PID=/opt/graylog2-web-interface/RUNNING_PID
+GRAYLOG2_WEB_INTERFACE_PID=/var/run/graylog2-web-interface.pid
 
 start() {
 echo "Starting graylog2-web-interface ..."
