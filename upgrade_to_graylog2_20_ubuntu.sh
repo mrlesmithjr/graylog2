@@ -89,7 +89,7 @@ NOHUP=`which nohup`
 GRAYLOG2CTL_DIR="/opt/graylog2-server/bin"
 GRAYLOG2_SERVER_JAR=graylog2-server.jar
 GRAYLOG2_CONF=/etc/graylog2.conf
-GRAYLOG2_PID=/tmp/graylog2.pid
+GRAYLOG2_PID=/var/run/graylog2-server.pid
 LOG_FILE=log/graylog2-server.log
 
 start() {
@@ -191,7 +191,7 @@ NOHUP=`which nohup`
 JAVA_CMD=/usr/bin/java
 GRAYLOG2_WEB_INTERFACE_HOME=/opt/graylog2-web-interface
 
-GRAYLOG2_WEB_INTERFACE_PID=/opt/graylog2-web-interface/RUNNING_PID
+GRAYLOG2_WEB_INTERFACE_PID=/var/run/graylog2-web-interface.pid
 
 start() {
 echo "Starting graylog2-web-interface ..."
