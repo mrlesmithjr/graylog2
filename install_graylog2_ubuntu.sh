@@ -73,7 +73,7 @@ done
 # Create Symbolic Links
 echo "Creating SymLinks for elasticsearch and graylog2-server"
 # ln -s elasticsearch-0.20.6/ elasticsearch
-ln -s graylog2-server-0.12.0/ graylog2-server
+ln -sf graylog2-server-0.12.0/ graylog2-server
 
 # Install elasticsearch
 echo "Installing elasticsearch"
@@ -99,9 +99,9 @@ apt-get -y install mongodb-10gen
 echo "Installing graylog2-server"
 cd graylog2-server-0.12.0/
 cp /opt/graylog2-server/elasticsearch.yml{.example,}
-ln -s /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
+ln -sf /opt/graylog2-server/elasticsearch.yml /etc/graylog2-elasticsearch.yml
 cp /opt/graylog2-server/graylog2.conf{.example,}
-ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
+ln -sf /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /opt/graylog2-server/graylog2.conf
 
 # Create graylog2-server startup script
@@ -163,8 +163,8 @@ update-rc.d graylog2-server defaults
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
 cd /opt/
-ln -s graylog2-web-interface-0.12.0 graylog2-web-interface
-mkdir  /opt/graylog2-web-interface-0.12.0/tmp/
+ln -sf graylog2-web-interface-0.12.0 graylog2-web-interface
+mkdir -p /opt/graylog2-web-interface-0.12.0/tmp/
 
 # Install Ruby
 echo "Installing Ruby"
@@ -201,7 +201,7 @@ mongo graylog2 --eval "db.auth('grayloguser', 'password123')"
 echo "Installing Apache-Passenger Modules"
 gem install passenger
 # Create Passenger symbolic link to get around versions changing
-ln -s /var/lib/gems/1.9.1/gems/passenger-4* /var/lib/gems/1.9.1/gems/passenger
+ln -sf /var/lib/gems/1.9.1/gems/passenger-4* /var/lib/gems/1.9.1/gems/passenger
 # Build Apache2 passenger module
 /var/lib/gems/1.9.1/gems/passenger/bin/passenger-install-apache2-module --auto
 
