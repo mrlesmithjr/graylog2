@@ -70,7 +70,8 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee /etc/apt/sources.list.d/10gen.list
 apt-get -qq update
 apt-get -y install mongodb-10gen
-# service mongodb restart
+sed -i -e 's|#noprealloc = true|noprealloc = false|' /etc/mongodb.conf
+service mongodb restart
 
 # Making changes to /etc/security/limits.conf to allow more open files for elasticsearch
 mv /etc/security/limits.conf /etc/security/limits.bak
