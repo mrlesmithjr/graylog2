@@ -72,7 +72,7 @@ apt-get -qq update
 apt-get -y install mongodb-10gen
 
 # Sleeping for 3 minutes during install to give MongoDB time to preallocate files
-echo "Sleeping for 3 minutes to give MongoDB time to preallocate files"
+echo "!!!*** Script is sleeping for 3 minutes to give MongoDB time to preallocate files ***!!!"
 sleep 3m
 
 # Making changes to /etc/security/limits.conf to allow more open files for elasticsearch
