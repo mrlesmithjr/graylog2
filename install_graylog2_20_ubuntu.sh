@@ -57,6 +57,9 @@ ln -s graylog2-server-0.2*/ graylog2-server
 echo "Installing elasticsearch"
 dpkg -i elasticsearch-0.90.10.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
+# Restart elasticsearch
+service elasticsearch restart
+
 
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
@@ -67,7 +70,7 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee /etc/apt/sources.list.d/10gen.list
 apt-get -qq update
 apt-get -y install mongodb-10gen
-service mongodb restart
+# service mongodb restart
 
 # Making changes to /etc/security/limits.conf to allow more open files for elasticsearch
 mv /etc/security/limits.conf /etc/security/limits.bak
@@ -75,9 +78,6 @@ grep -Ev "# End of file" /etc/security/limits.bak > /etc/security/limits.conf
 echo "elasticsearch soft nofile 32000" >> /etc/security/limits.conf
 echo "elasticsearch hard nofile 32000" >> /etc/security/limits.conf
 echo "# End of file" >> /etc/security/limits.conf
-
-# Restart elasticsearch
-service elasticsearch restart
 
 # Install graylog2-server
 echo "Installing graylog2-server"
