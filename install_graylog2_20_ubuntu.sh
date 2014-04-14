@@ -198,6 +198,9 @@ update-rc.d graylog2-server defaults
 echo "Starting graylog2-server"
 service graylog2-server start
 
+echo "Waiting for Graylog2-Server to start!"
+while ! nc -vz localhost 12900; do sleep 1; done
+
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
 cd /opt/
