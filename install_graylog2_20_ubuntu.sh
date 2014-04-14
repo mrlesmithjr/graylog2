@@ -60,7 +60,6 @@ sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elastic
 # Restart elasticsearch
 service elasticsearch restart
 
-
 # Test elasticsearch
 # curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
 
@@ -71,8 +70,9 @@ echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | 
 apt-get -qq update
 apt-get -y install mongodb-10gen
 
-# Sleeping for 3 minutes during install to give MongoDB time to preallocate files
-echo "!!!*** Script is sleeping to give MongoDB time to preallocate files ***!!!"
+# Waiting for MongoDB to start accepting connections on tcp/27017
+echo "!!!*** Waiting for MongoDB to start accepting connections ***!!!"
+echo "This could take a while so connection timeouts below are normal!"
 while ! nc -vz localhost 27017; do sleep 1; done
 
 # Making changes to /etc/security/limits.conf to allow more open files for elasticsearch
@@ -198,6 +198,7 @@ update-rc.d graylog2-server defaults
 echo "Starting graylog2-server"
 service graylog2-server start
 
+# Waiting for Graylog2-Server to start accepting requests on tcp/12900
 echo "Waiting for Graylog2-Server to start!"
 while ! nc -vz localhost 12900; do sleep 1; done
 
