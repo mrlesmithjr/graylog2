@@ -21,6 +21,12 @@ SERVERALIAS=$IPADDY
 service graylog2-server stop
 service graylog2-web-interface stop
 
+# Stop Elasticsearch
+service elasticsearch stop
+
+# Backup 
+mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.orig
+
 # Remove graylog2 symlinks
 rm /opt/graylog2-server
 rm /opt/graylog2-web-interface
@@ -47,6 +53,7 @@ done
 # Install elasticsearch
 echo "Installing elasticsearch"
 dpkg -i elasticsearch-1-2.0.deb
+sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Set Elasticsearch to start on boot
 sudo update-rc.d elasticsearch defaults 95 10
