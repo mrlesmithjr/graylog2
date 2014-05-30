@@ -52,11 +52,12 @@ done
 
 # Install elasticsearch
 echo "Installing elasticsearch"
+cd /opt
 dpkg -i elasticsearch-1-2.0.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Set Elasticsearch to start on boot
-sudo update-rc.d elasticsearch defaults 95 10
+update-rc.d elasticsearch defaults 95 10
 
 # Create Symbolic Links
 echo "Creating SymLink Graylog2-server"
