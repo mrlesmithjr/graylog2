@@ -58,6 +58,9 @@ sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elastic
 # Set Elasticsearch to start on boot
 update-rc.d elasticsearch defaults 95 10
 
+# Restarting Elasticsearch
+service elasticsearch restart
+
 # Create Symbolic Links
 echo "Creating SymLink Graylog2-server"
 ln -s graylog2-server-0.2*/ graylog2-server
