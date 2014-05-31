@@ -52,7 +52,7 @@ done
 
 # Install elasticsearch
 echo "Installing elasticsearch"
-dpkg -i --force-overwrite elasticsearch-1-2.0.deb
+dpkg -i elasticsearch-1-2.0.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Set Elasticsearch to start on boot
