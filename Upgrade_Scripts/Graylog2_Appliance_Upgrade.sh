@@ -22,10 +22,10 @@ service graylog2-server stop
 service graylog2-web-interface stop
 
 # Stop Elasticsearch
-service elasticsearch stop
+#service elasticsearch stop
 
 # Remove previous elasticsearch version
-dpkg -r elasticsearch
+#dpkg -r elasticsearch
 
 # Remove graylog2 symlinks
 rm /opt/graylog2-server
@@ -51,19 +51,19 @@ tar zxf "$f"
 done
 
 # Install elasticsearch
-echo "Installing elasticsearch"
-dpkg -i elasticsearch-1.2.0.deb
-sed -i -e 's|# cluster.name: elasticsearchcluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
+#echo "Installing elasticsearch"
+#dpkg -i elasticsearch-1.2.0.deb
+#sed -i -e 's|# cluster.name: elasticsearchcluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Set Elasticsearch to start on boot
-update-rc.d elasticsearch defaults 95 10
+#update-rc.d elasticsearch defaults 95 10
 
 # Reconfigure graylog2-server startup
 update-rc.d -f graylog2-server remove
 update-rc.d graylog2-server defaults 96 04
 
 # Restarting Elasticsearch
-service elasticsearch restart
+#service elasticsearch restart
 
 # Create Symbolic Links
 echo "Creating SymLink Graylog2-server"
