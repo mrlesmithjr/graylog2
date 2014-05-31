@@ -39,7 +39,7 @@ rm -rf /opt/graylog2-web-interface*
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.0.deb
+#wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.0.deb
 wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.2/graylog2-server-0.20.2.tgz
 wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.2/graylog2-web-interface-0.20.2.tgz
 
