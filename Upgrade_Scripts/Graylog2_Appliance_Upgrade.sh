@@ -24,8 +24,8 @@ service graylog2-web-interface stop
 # Stop Elasticsearch
 service elasticsearch stop
 
-# Backup 
-mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.orig
+# Remove previous elasticsearch version
+dpkg -r elasticsearch
 
 # Remove graylog2 symlinks
 rm /opt/graylog2-server
