@@ -2,7 +2,7 @@
 #Provided by @mrlesmithjr
 #EveryThingShouldBeVirtual.com
 
-# Graylog2 upgrade script for Ubuntu
+# Graylog2 upgrade script for appliance
 
 set -e
 # Setup logging
@@ -21,12 +21,6 @@ SERVERALIAS=$IPADDY
 service graylog2-server stop
 service graylog2-web-interface stop
 
-# Stop Elasticsearch
-#service elasticsearch stop
-
-# Remove previous elasticsearch version
-#dpkg -r elasticsearch
-
 # Remove graylog2 symlinks
 rm /opt/graylog2-server
 rm /opt/graylog2-web-interface
@@ -36,10 +30,9 @@ rm -rf /opt/graylog2-server*
 rm /etc/graylog2.conf
 rm -rf /opt/graylog2-web-interface*
 
-# Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
-echo "Downloading Elasticsearch, Graylog2-Server and Graylog2-Web-Interface to /opt"
+# Download Graylog2-Server and Graylog2-Web-Interface
+echo "Downloading Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-#wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.0.deb
 wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.2/graylog2-server-0.20.2.tgz
 wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.2/graylog2-web-interface-0.20.2.tgz
 
@@ -50,20 +43,9 @@ do
 tar zxf "$f"
 done
 
-# Install elasticsearch
-#echo "Installing elasticsearch"
-#dpkg -i elasticsearch-1.2.0.deb
-#sed -i -e 's|# cluster.name: elasticsearchcluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
-
-# Set Elasticsearch to start on boot
-#update-rc.d elasticsearch defaults 95 10
-
 # Reconfigure graylog2-server startup
 update-rc.d -f graylog2-server remove
 update-rc.d graylog2-server defaults 96 04
-
-# Restarting Elasticsearch
-#service elasticsearch restart
 
 # Create Symbolic Links
 echo "Creating SymLink Graylog2-server"
@@ -84,6 +66,9 @@ sed -i -e 's|#elasticsearch_discovery_zen_ping_unicast_hosts = 192.168.1.203:930
 
 # Setting new retention policy setting or Graylog2 Server will not start
 sed -i 's|retention_strategy = delete|retention_strategy = close|' /etc/graylog2.conf
+
+# This setting is required as of v0.20.2 in /etc/graylog2.conf
+sed -i -e 's|#rest_transport_uri = http://192.168.1.1:12900/|rest_transport_uri = http://127.0.0.1:12900/|' /etc/graylog2.conf
 
 # Install graylog2 web interface
 echo "Installing graylog2-web-interface"
