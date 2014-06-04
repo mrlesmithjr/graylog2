@@ -10,6 +10,11 @@ set -e
 exec 2> >(tee "./graylog2/install_graylog2.err")
 exec > >(tee "./graylog2/install_graylog2.log")
 
+# Setup Pause function
+function pause(){
+   read -p "$*"
+}
+
 # Checking if running as root (10/16/2013 - No longer an issue - Should be ran as root or with sudo)
 # Do not run as root
 # if [[ $EUID -eq 0 ]];then
@@ -91,6 +96,7 @@ echo "Installing graylog2-server"
 echo -n "Enter a password to use for the admin account to login to the Graylog2 webUI: "
 read adminpass
 echo "You entered $adminpass (MAKE SURE TO NOT FORGET THIS PASSWORD!)"
+pause 'Press [Enter] key to continue...'
 cd graylog2-server/
 cp /opt/graylog2-server/graylog2.conf{.example,}
 mv graylog2.conf /etc/
@@ -354,7 +360,7 @@ echo "Browse to IP address of this Graylog2 Server Used for Installation"
 echo "IP Address detected from system is $IPADDY"
 echo "Browse to http://$IPADDY:9000"
 echo "Login with username: admin"
-echo "Login with password: password123"
+echo "Login with password: $adminpass"
 echo "You Entered $SERVERNAME During Install"
 echo "Browse to http://$SERVERNAME:9000 If Different"
 echo "EveryThingShouldBeVirtual.com"
