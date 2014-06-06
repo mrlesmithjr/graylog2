@@ -27,7 +27,7 @@ rm /opt/graylog2-web-interface
 
 # Remove previous graylog2 server and web-interface
 rm -rf /opt/graylog2-server*
-rm /etc/graylog2.conf
+cp /etc/graylog2.conf /etc/graylog2.conf.orig
 rm -rf /opt/graylog2-web-interface*
 
 # Download Graylog2-Server and Graylog2-Web-Interface
@@ -53,12 +53,17 @@ ln -s graylog2-server-0.2*/ graylog2-server
 
 # Install graylog2-server
 echo "Installing graylog2-server"
+echo -n "Enter a password to use for the admin account to login to the Graylog2 webUI: "
+read adminpass
+echo "You entered $adminpass (MAKE SURE TO NOT FORGET THIS PASSWORD!)"
+pause 'Press [Enter] key to continue...'
 cd graylog2-server/
-cp /opt/graylog2-server/graylog2.conf{.example,}
-mv graylog2.conf /etc/
+#cp /opt/graylog2-server/graylog2.conf{.example,}
+#mv graylog2.conf /etc/
 pass_secret=$(pwgen -s 96)
+admin_pass_hash=$(echo -n $adminpass|sha256sum|awk '{print $1}')
 sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /etc/graylog2.conf
-sed -i -e "s|root_password_sha2 =|root_password_sha2 = ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f|" /etc/graylog2.conf
+sed -i -e "s|root_password_sha2 =|root_password_sha2 = $admin_pass_hash|" /etc/graylog2.conf
 sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /etc/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /etc/graylog2.conf
 sed -i -e 's|#elasticsearch_discovery_zen_ping_multicast_enabled = false|elasticsearch_discovery_zen_ping_multicast_enabled = false|' /etc/graylog2.conf
