@@ -33,8 +33,8 @@ rm -rf /opt/graylog2-web-interface*
 # Download Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.2/graylog2-server-0.20.2.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.2/graylog2-web-interface-0.20.2.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.3/graylog2-server-0.20.3.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.3/graylog2-web-interface-0.20.3.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -104,7 +104,7 @@ echo "Browse to IP address of this Graylog2 Server Used for Installation"
 echo "IP Address detected from system is $IPADDY"
 echo "Browse to http://$IPADDY:9000"
 echo "Login with username: admin"
-echo "Login with password: password123"
+echo "Login with password: $adminpass"
 echo "You Entered $SERVERNAME During Install"
 echo "Browse to http://$SERVERNAME:9000 If Different"
 echo "EveryThingShouldBeVirtual.com"
