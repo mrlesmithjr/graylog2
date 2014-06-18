@@ -2,7 +2,7 @@
 #Provided by @mrlesmithjr
 #EveryThingShouldBeVirtual.com
 
-# Graylog2 upgrade script for appliance
+# Graylog2 upgrade script
 
 set -e
 # Setup logging
