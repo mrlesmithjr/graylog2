@@ -10,6 +10,11 @@ set -e
 exec 2> >(tee "./graylog2/upgrade_graylog2.err")
 exec > >(tee "./graylog2/upgrade_graylog2.log")
 
+# Setup Pause function
+function pause(){
+   read -p "$*"
+}
+
 echo "Detecting IP Address"
 IPADDY="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 echo "Detected IP Address is $IPADDY"
