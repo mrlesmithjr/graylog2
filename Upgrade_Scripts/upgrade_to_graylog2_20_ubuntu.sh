@@ -29,8 +29,8 @@ SERVERALIAS=$IPADDY
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.1/graylog2-server-0.20.1.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.1/graylog2-web-interface-0.20.1.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.3/graylog2-server-0.20.3.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.3/graylog2-web-interface-0.20.3.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -38,6 +38,10 @@ echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
 do
 tar zxf "$f"
 done
+
+# Reconfigure graylog2-server startup
+update-rc.d -f graylog2-server remove
+update-rc.d graylog2-server defaults 96 04
 
 # Create Symbolic Links
 echo "Creating SymLink Graylog2-server"
