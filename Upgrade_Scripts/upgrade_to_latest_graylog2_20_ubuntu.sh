@@ -63,8 +63,9 @@ read adminpass
 echo "You entered $adminpass (MAKE SURE TO NOT FORGET THIS PASSWORD!)"
 pause 'Press [Enter] key to continue...'
 cd graylog2-server/
-#cp /opt/graylog2-server/graylog2.conf{.example,}
-#mv graylog2.conf /etc/
+cp /etc/graylog2.conf /etc/graylog2.conf.pre-upgrade
+cp /opt/graylog2-server/graylog2.conf{.example,}
+mv graylog2.conf /etc/
 pass_secret=$(pwgen -s 96)
 admin_pass_hash=$(echo -n $adminpass|sha256sum|awk '{print $1}')
 sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /etc/graylog2.conf
