@@ -133,6 +133,8 @@ echo "Creating /etc/init.d/graylog2-server startup script"
 cat <<'EOF'
 #!/bin/bash
 
+# chkconfig:   2345 85 15
+
 ### BEGIN INIT INFO
 # Provides:          graylog2-server
 # Required-Start:    $elasticsearch
@@ -237,6 +239,8 @@ echo "Creating Graylog2-web-interface startup script"
 (
 cat <<'EOF'
 #!/bin/sh
+
+# chkconfig:   2345 90 10
 
 ### BEGIN INIT INFO
 # Provides:          graylog2-web-interface
