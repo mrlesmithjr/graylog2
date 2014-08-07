@@ -44,8 +44,8 @@ apt-get -y install git curl build-essential openjdk-7-jre pwgen wget
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.10.deb
-wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.3/graylog2-server-0.20.3.tgz
-wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.3/graylog2-web-interface-0.20.3.tgz
+wget https://github.com/Graylog2/graylog2-server/releases/download/0.20.6/graylog2-server-0.20.6.tgz
+wget https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.6/graylog2-web-interface-0.20.6.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
