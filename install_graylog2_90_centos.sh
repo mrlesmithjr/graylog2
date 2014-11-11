@@ -1,29 +1,24 @@
 #!/bin/bash -x
 #Provided by @mrlesmithjr
 #EveryThingShouldBeVirtual.com
+#start script with bash install.sh for example
 
 # Setup Pause function
 function pause(){
    read -p "$*"
 }
 
-#updated by Boardstretcher
+# updated by Boardstretcher
 
-EPEL_REPO="/etc/yum.repos.d/epel.repo"
-
-echo "Creating $EPEL_REPO"
-cat << 'EOF' > ${EPEL_REPO}
-[epel]
-name=Extra Packages for Enterprise Linux 6 - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
-failovermethod=priority
-enabled=1
-gpgcheck=0
-EOF
+# install epel
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+sudo rpm -Uvh epel-release-6*.rpm
 
 # update system 
 yum update -y 
+
+# install nc
+yum install -y nc
   
 # disable ip6 
 echo "" >> /etc/sysctl.conf 
@@ -41,6 +36,7 @@ sed -i 's/\=enforcing/\=disabled/g' /etc/selinux/config
 # reboot
 
 # Setup logging
+mkdir "./graylog2/"
 exec 2> >(tee "./graylog2/install_graylog2.err")
 exec > >(tee "./graylog2/install_graylog2.log")
 
