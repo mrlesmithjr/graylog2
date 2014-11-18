@@ -5,6 +5,7 @@ visit my website at EverythingShouldBeVirtual.com
 
 Update 02/21/2014 - Graylog2 v0.12.0 no longer maintained - v0.20.x is the going forward version (The script to use now is for version v0.20.x)
 Update 04/30/2014 - All older unmaintained v.0.12.0 scripts are in graylog2/Old_Scripts
+Update 11/18/2014 - Graylog2 v0.91.3 script for ubuntu added
 
 Installation steps
 ------------------
