@@ -102,8 +102,8 @@ mv graylog2.conf /etc/
 #ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
 pass_secret=$(pwgen -s 96)
 sed -i -e 's|password_secret =|password_secret = '$pass_secret'|' /etc/graylog2.conf
-admin_pass_hash=$(echo -n $adminpass | shasum -a 256)
-#admin_pass_hash=$(echo -n $adminpass|sha256sum|awk '{print $1}')
+#admin_pass_hash=$(echo -n $adminpass | shasum -a 256)
+admin_pass_hash=$(echo -n $adminpass|sha256sum|awk '{print $1}')
 sed -i -e "s|root_password_sha2 =|root_password_sha2 = $admin_pass_hash|" /etc/graylog2.conf
 sed -i -e 's|elasticsearch_shards = 4|elasticsearch_shards = 1|' /etc/graylog2.conf
 sed -i -e 's|mongodb_useauth = true|mongodb_useauth = false|' /etc/graylog2.conf
