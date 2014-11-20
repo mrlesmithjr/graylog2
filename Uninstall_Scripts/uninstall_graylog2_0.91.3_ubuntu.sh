@@ -15,7 +15,8 @@ service elasticsearch stop
 service graylog2-web-interface stop
 rm /etc/init.d/graylog2-web-interface
 update-rc.d graylog2-web-interface remove
-service graylog2-server stop
+#service graylog2-server stop
+/etc/init.d/graylog2-server stop
 rm /etc/init.d/graylog2-server
 update-rc.d graylog2-server remove
 rm /etc/graylog2.conf
