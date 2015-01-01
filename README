@@ -1,59 +1,14 @@
-This installation script will perform an automated install of Graylog2 on Ubuntu 12.04/12.10/13.10/14.04 and will be updated as times goes on
+The installation script will perform an automated install of Graylog2 on Ubuntu 14.04, installing all dependencies & autogenerating all settings, besides the admin password for the web interface, which the script will request.
 
-contact me on the twitters @mrlesmithjr
-visit my website at EverythingShouldBeVirtual.com
 
-Update 02/21/2014 - Graylog2 v0.12.0 no longer maintained - v0.20.x is the going forward version (The script to use now is for version v0.20.x)
-Update 04/30/2014 - All older unmaintained v.0.12.0 scripts are in graylog2/Old_Scripts
+Update 12/31/2014 (zstarer) - Newest version of Graylog2 (0.92.3) supported with ElasticSearch updated (1.3.4) and bugs ironed out. Please let me know if you run into any issues.
 
 Installation steps
 ------------------
 sudo apt-get -y install git
 cd ~
-git clone https://github.com/mrlesmithjr/graylog2/
-chmod +x ./graylog2/install_graylog2_20_ubuntu.sh
+git clone https://github.com/zstarer/graylog2/
+chmod +x ./graylog2/install_graylog2_92_3_ubuntu.sh
+sudo ./graylog2/install_graylog2_92_3_ubuntu.sh
 
-To change your ip address of the server you are installing on you will need to edit the script or let the script auto detect your IP for you. The default is auto detect. If you use the default of auto detect skip editing the file and continue on.
-Edit the file
-
-nano ./graylog2/install_graylog2_20_ubuntu.sh
-
-Save the file with ctrl^x.
-
-Now enter the following to start running the script.
-
-cd ~
-sudo ./graylog2/install_graylog2_20_ubuntu.sh
-
-Uninstall steps for Preview/RC/Final v0.20.0 releases
------------------------------------------------------
-cd ~
-mv graylog2 graylog2.old
-git clone https://github.com/mrlesmithjr/graylog2/
-chmod +x ./graylog2/Uninstall_Scripts/uninstall_graylog2_preview_ubuntu.sh
-sudo ./graylog2/Uninstall_Scripts/uninstall_graylog2_preview_ubuntu.sh
-
-Upgrade steps from Preview/RC to Final v0.20.0 releases (***Use with caution as of now***) **Not for v0.12.0 to v0.20.x versions!!!
--------------------------------------------------------
-cd ~
-mv graylog2 graylog2.old
-git clone https://github.com/mrlesmithjr/graylog2/
-chmod +x ./graylog2/Upgrade_Scripts/upgrade_to_graylog2_20_ubuntu.sh
-sudo ./graylog2/Upgrade_Scripts/upgrade_to_graylog2_20_ubuntu.sh
-
-
-Debian 6.0
-----------
-Within the github repository there is also a script to automate a Debian 6.0 Graylog2 (v0.12.0) installation. If you are installing on Debian 6.0 run the following instead.
-
-chmod +x ./graylog2/Old_Scripts/install_graylog2_debian.sh
-cd ~
-./graylog2/Old_Scripts/install_graylog2_debian.sh
-
-
-CentOS
-------
-There is also a CentOS script for installing Graylog2. Thanks to boardstretcher for the help on this. https://github.com/boardstretcher
-
-chmod +x ./graylog2/install_graylog2_20_centos.sh
-./graylog2/install_graylog2_20_centos.sh
+(Forked from https://github.com/mrlesmithjr/graylog2)
