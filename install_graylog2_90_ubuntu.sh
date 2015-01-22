@@ -37,15 +37,15 @@ sed -i -e 's|deb cdrom:|# deb cdrom:|' /etc/apt/sources.list
 apt-get -qq update
 
 # Install Pre-Reqs
-# apt-get -y install git curl libcurl4-openssl-dev libapr1-dev libcurl4-openssl-dev libapr1-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config python-software-properties software-properties-common openjdk-7-jre pwgen
-apt-get -y install git curl build-essential openjdk-7-jre pwgen wget
+apt-get -y install git curl build-essential openjdk-7-jre pwgen wget netcat
 
 # Download Elasticsearch, Graylog2-Server and Graylog2-Web-Interface
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.10.deb
-wget http://packages.graylog2.org/releases/graylog2-server/graylog2-server-0.90.0.tgz
-wget http://packages.graylog2.org/releases/graylog2-web-interface/graylog2-web-interface-0.90.0.tgz
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb
+wget http://packages.graylog2.org/releases/graylog2-server/graylog2-server-0.92.4.tgz
+wget http://packages.graylog2.org/releases/graylog2-web-interface/graylog2-web-interface-0.92.4.tgz
+
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
   for f in *.*gz
@@ -59,7 +59,7 @@ ln -s graylog2-server-0.9*/ graylog2-server
 
 # Install elasticsearch
 echo "Installing elasticsearch"
-dpkg -i elasticsearch-0.90.10.deb
+dpkg -i elasticsearch-1.4.2.deb
 sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Making elasticsearch start on boot
@@ -343,7 +343,7 @@ chown -R root:root /opt/graylog2*
 echo "Cleaning up"
 rm /opt/graylog2-server*.*gz
 rm /opt/graylog2-web-interface*.*gz
-rm /opt/elasticsearch-0.90.10.deb
+rm /opt/elasticsearch-1.4.2.deb
 
 # Restart All Services
 echo "Restarting All Services Required for Graylog2 to work"
