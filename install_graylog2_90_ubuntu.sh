@@ -60,7 +60,7 @@ ln -s graylog2-server-0.9*/ graylog2-server
 # Install elasticsearch
 echo "Installing elasticsearch"
 dpkg -i elasticsearch-1.4.2.deb
-sed -i -e 's|# cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
+sed -i -e 's|#cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Making elasticsearch start on boot
 sudo update-rc.d elasticsearch defaults 95 10
