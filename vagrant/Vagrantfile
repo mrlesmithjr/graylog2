@@ -8,6 +8,7 @@ Vagrant.configure(2) do |config|
     vb.cpus = "2"  
   end
   config.vm.define :server do |srv|
+    srv.vm.name = "graylog2-server"
     srv.vm.hostname = "graylog2-server"
     srv.vm.network "forwarded_port", guest: 9000, host: 9000
     srv.vm.provision :shell, path: "provision.sh"
