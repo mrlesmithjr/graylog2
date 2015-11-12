@@ -44,8 +44,8 @@ apt-get -y install git curl build-essential openjdk-7-jre pwgen wget netcat
 echo "Downloading Elastic Search, Graylog2-Server and Graylog2-Web-Interface to /opt"
 cd /opt
 wget https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.0.0/elasticsearch-2.0.0.deb
-wget https://packages.graylog2.org/releases/graylog2-server/graylog-1.2.2.tgz
-wget https://packages.graylog2.org/releases/graylog2-web-interface/graylog-web-interface-1.2.2.tgz
+wget https://packages.graylog2.org/releases/graylog2-server/graylog-*.tgz
+wget https://packages.graylog2.org/releases/graylog2-web-interface/graylog-web-interface-*.tgz
 
 # Extract files
 echo "Extracting Graylog2-Server and Graylog2-Web-Interface to /opt"
@@ -60,7 +60,7 @@ ln -s graylog2-server-*/ graylog2-server
 
 # Install elasticsearch
 echo "Installing elasticsearch"
-dpkg -i elasticsearch-2.0.0.deb
+dpkg -i elasticsearch-*.deb
 sed -i -e 's|#cluster.name: elasticsearch|cluster.name: graylog2|' /etc/elasticsearch/elasticsearch.yml
 
 # Making elasticsearch start on boot
