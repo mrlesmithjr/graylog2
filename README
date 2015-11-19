@@ -6,6 +6,8 @@ visit my website at EverythingShouldBeVirtual.com
 Update 02/21/2014 - Graylog2 v0.12.0 no longer maintained - v0.20.x is the going forward version (The script to use now is for version v0.20.x)
 Update 04/30/2014 - All older unmaintained v.0.12.0 scripts are in graylog2/Old_Scripts
 Update 01/21/2015 - Newest versions maintained are 0.9x.x
+Update 11/19/2015 - A note about this repo and scripts....No further development is being done. For a newer version (Not always up to date) using Ansible for deployments can be found at https://github.com/mrlesmithjr/ansible-graylog
+
 
 Installation steps
 ------------------
