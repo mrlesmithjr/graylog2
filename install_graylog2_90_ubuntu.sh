@@ -30,7 +30,7 @@ echo "Detected IP Address is $IPADDY"
 
 SERVERNAME=$IPADDY
 SERVERALIAS=$IPADDY
-adminpass=password123
+#adminpass=
 
 # Disable CD Sources in /etc/apt/sources.list
 echo "Disabling CD Sources and Updating Apt Packages and Installing Pre-Reqs"
