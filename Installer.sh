@@ -97,7 +97,7 @@ echo -n "Enter a password to use for the admin account to login to the Graylog2 
 read adminpass
 echo "You entered $adminpass (MAKE SURE TO NOT FORGET THIS PASSWORD!)"
 pause 'Press [Enter] key to continue...'
-cd graylog2-server/
+cd /opt/graylog2-server/
 cp /opt/graylog2-server/graylog2.conf{.example,}
 mv graylog2.conf /etc/
 #ln -s /opt/graylog2-server/graylog2.conf /etc/graylog2.conf
