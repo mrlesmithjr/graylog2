@@ -151,28 +151,43 @@ NOHUP=`which nohup`
 GRAYLOG2CTL_DIR="/opt/graylog2-server/bin"
 GRAYLOG2_SERVER_JAR=graylog2-server.jar
 GRAYLOG2_CONF=/etc/graylog2.conf
-GRAYLOG2_PID=/tmp/graylog2.pid
+GRAYLOG2_PID=/var/run/graylog2-server.pid
 LOG_FILE=log/graylog2-server.log
 
 start() {
-    echo "Starting graylog2-server ..."
-    cd "$GRAYLOG2CTL_DIR/.."
-#    sleep 2m
-    $NOHUP java -jar ${GRAYLOG2_SERVER_JAR} -f ${GRAYLOG2_CONF} -p ${GRAYLOG2_PID} >> ${LOG_FILE} &
+	if [ -f "$GRAYLOG2_PID" ]; then
+		pid=$(get_pid)
+		kill -s 0 "$pid" ; STAT=$?
+		if [ X"$STAT" == X0 ]; then
+			echo "ERROR: graylog2-server already claims to be running as PID: $pid"
+			exit 1
+		fi
+	fi
+	echo "Starting graylog2-server ..."
+	cd "$GRAYLOG2CTL_DIR/.."
+	$NOHUP java -jar ${GRAYLOG2_SERVER_JAR} -f ${GRAYLOG2_CONF} -p ${GRAYLOG2_PID} >> ${LOG_FILE} 2>&1 &
 }
 
 stop() {
-    PID=`cat ${GRAYLOG2_PID}`
-    echo "Stopping graylog2-server ($PID) ..."
-    if kill $PID; then
-        rm ${GRAYLOG2_PID}
-    fi
+if [ -f "$GRAYLOG2_PID" ]; then
+		pid=$(get_pid)
+		kill -s 0 "$pid" ; STAT=$?
+		if [ X"$STAT" == X0 ]; then
+				echo "Stopping graylog2-server ..."
+				kill "$pid"
+		fi
+		#The next line simply waits untill $pid has stopped
+		tail -f /dev/null --pid "$pid"
+		rm "${GRAYLOG2_PID}" 2>/dev/null
+	else
+		echo "graylog2-server is not running"
+fi
 }
 
 restart() {
-    echo "Restarting graylog2-server ..."
-    stop
-    start
+		echo "Restarting graylog2-server ..."
+		stop
+		start
 }
 
 status() {
