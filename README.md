@@ -1,4 +1,7 @@
-# graylog2
+> [!CAUTION]
+> **This project is archived and no longer maintained.**
+> Archived: 2026-03-26
+> Reason: No longer updated or maintained; Graylog installation has evolved significantly since this was written# graylog2
 
 This installation script will perform an automated install of [Graylog2](http://graylog2.org)
 on Ubuntu 12.04/12.10/13.10/14.04 and will be updated as times goes on.
